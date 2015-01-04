@@ -1,17 +1,17 @@
 {
-  "name": "opt-parser",
+  "name": "commandpost",
   "author": "vvakame",
   "version": "0.0.1",
   "description": "option parser",
   "main": "./index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vvakame/opt-parser.git"
+    "url": "https://github.com/vvakame/commandpost.git"
   },
   "bugs": {
-    "url": "https://github.com/vvakame/opt-parser/issues"
+    "url": "https://github.com/vvakame/commandpost/issues"
   },
-  "homepage": "https://github.com/vvakame/opt-parser",
+  "homepage": "https://github.com/vvakame/commandpost",
   "license": {
     "type": "MIT",
     "url": "http://vvakame.mit-license.org/"
