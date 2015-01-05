@@ -6,7 +6,7 @@ class Option {
     long:string;
     description:string;
 
-    constructor(flags:string, description?:string) {
+    constructor(public flags:string, description?:string) {
         this.required = flags.indexOf("<") !== -1;
         this.optional = flags.indexOf("[") !== -1;
         this.bool = flags.indexOf("-no-") === -1;

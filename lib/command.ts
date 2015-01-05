@@ -1,5 +1,7 @@
 import Option = require("./option");
 
+import utils = require("./utils");
+
 class Command<T> {
     _description:string;
     _action:(opts:T, rest:string[])=>any;
@@ -7,6 +9,7 @@ class Command<T> {
     _rawArgs:string[];
     _args:string[];
     _rest:string[] = [];
+    _help = new Option("-h, --help", "display help");
 
     parent:Command<any>;
     subCommands:Command<any>[] = [];
@@ -21,6 +24,7 @@ class Command<T> {
         return this;
     }
 
+    // TODO defaultValue
     option(flags:string, description?:string, defaultValue?:any):Command<T> {
         var option = new Option(flags, description);
         this.options.push(option);
@@ -39,14 +43,87 @@ class Command<T> {
         return command;
     }
 
+    is(arg:string) {
+        return this.name === arg;
+    }
+
+    help(flags:string, description:string) {
+        this._help = new Option(flags, description);
+        return this;
+    }
+
+    helpText():string {
+        var result = "";
+        // usage part
+        result += "  Usage: " + this._description + "\n\n";
+
+        // options part
+        if (this.options.length !== 0) {
+            result += "  Options:\n\n";
+            var optionsMaxLength = utils.maxLength(this.options.map(opt => opt.flags));
+            result += this.options.map(opt => {
+                var result = "    ";
+                result += utils.pad(opt.flags, optionsMaxLength);
+                result += "  ";
+                result += opt.description || "";
+                result += "\n";
+                return result;
+            }).join("");
+            result += "\n\n";
+        }
+
+        // sub commands part
+        if (this.subCommands.length !== 0) {
+            result += "  Commands:\n\n";
+            var subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
+            result += this.subCommands.map(cmd => {
+                var result = "    ";
+                result += utils.pad(cmd.name, subCommandsMaxLength);
+                result += "  ";
+                result += cmd._description || "";
+                result += "\n";
+                return result;
+            }).join("");
+            result += "\n\n";
+        }
+
+        return result;
+    }
+
     exec():Promise<{}> {
         return Promise.resolve(this._action(this.parsedOpts, this._rest));
     }
 
     parse(argv:string[]):Promise<{}> {
         var rest = this._processArgs(argv);
+        // resolve help action
+        if (this._args.some(arg => this._help.is(arg))) {
+            // include help option. (help for this command
+            process.stdout.write(this.helpText() + '\n');
+            process.exit(0);
+
+            return Promise.resolve({});
+        }
+        var subCommand:Command<any>;
+        if (this.parent == null) {
+            // only for top level (why? because I can't decide which is natural syntax between `foo help bar buzz` and `foo bar help buzz`.
+            if (this._rest.some(arg => this._help.name() === arg)) {
+                // include help sub command. (help for deeper level sub command
+                if (rest[0]) {
+                    subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
+                    if (subCommand) {
+                        process.stdout.write(subCommand.helpText() + '\n');
+                        process.exit(0);
+
+                        return Promise.resolve({});
+                    }
+                }
+                // TODO raise error? pass through?
+            }
+        }
+
         if (rest[0]) {
-            var subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
+            subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
             if (subCommand) {
                 return subCommand.parse(rest.slice(1));
             }
@@ -124,10 +201,6 @@ class Command<T> {
             }
         }
         return result;
-    }
-
-    is(arg:string) {
-        return this.name === arg;
     }
 }
 

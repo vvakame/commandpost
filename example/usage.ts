@@ -29,6 +29,7 @@ var remote = root
 
 remote
     .subCommand("add")
+    .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
     .action((opts, rest)=> {
         return remote
             .exec()
