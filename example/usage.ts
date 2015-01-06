@@ -6,40 +6,64 @@
 
 import lib = require("../lib/index");
 
+interface RootOptions {
+    replace: boolean;
+    config: string[];
+}
+interface RootArgs {
+}
+
 var root = lib
-    .create<{replace: boolean; config: string[];}>("usg")
+    .create<RootOptions, RootArgs>("usg")
     .description("foo bar")
     .option("-r, --replace", "replace files")
+    .option("--no-output", "silent mode")
     .option("-c, --config <file>", "specified config file")
-    .action((opts, rest) => {
+    .action((opts, args, rest) => {
         console.log("root action");
         console.log(opts);
+        console.log(args);
         console.log(rest);
     });
+
+interface RemoteOptions {
+    verbose: boolean;
+}
+interface RemoteArgs {
+    remoteUrl: string;
+}
 
 var remote = root
-    .subCommand<{verbose: boolean;}>("remote <remoteUrl>")
+    .subCommand<RemoteOptions, RemoteArgs>("remote <remoteUrl>")
     .description("about remote repos")
     .option("-v, --verbose")
-    .action((opts, rest)=> {
+    .action((opts, args, rest) => {
         console.log("remote action");
         console.log(opts);
+        console.log(args);
         console.log(rest);
     });
 
+interface RemoteAddOptions {
+}
+interface RemoteAddArgs {
+    remoteUrls: string[];
+}
+
 remote
-    .subCommand("add <remoteUrls...>")
+    .subCommand<RemoteAddOptions,RemoteAddArgs>("add <remoteUrls...>")
     .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
-    .action((opts, rest)=> {
+    .action((opts, args, rest) => {
         return remote
             .exec()
             .then(()=> {
                 console.log("remote add action");
                 console.log(opts);
+                console.log(args);
                 console.log(rest);
-                console.log("!root", root.parsedOpts, root._rest);
-                console.log("!remote", remote.parsedOpts, remote._rest);
-                console.log("!remote add", opts, rest);
+                console.log("!root", root.parsedOpts, root.parsedArgs, root._rest);
+                console.log("!remote", remote.parsedOpts, remote.parsedArgs, remote._rest);
+                console.log("!remote add", opts, args, rest);
             });
     });
 

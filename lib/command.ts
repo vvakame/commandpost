@@ -1,56 +1,60 @@
+"use strict";
+
 import Option = require("./option");
+import Argument = require("./argument");
 
 import utils = require("./utils");
 
 class Command<Opt,Arg> {
     _description:string;
-    _action:(opts:Opt, args:Arg, rest:string[])=>any;
-
-    _rawArgs:string[];
-    _args:string[];
-    _rest:string[] = [];
     _usage:string;
     _help = new Option("-h, --help", "display help");
+    _action:(opts:Opt, args:Arg, rest:string[])=>any;
 
-    name:string;
-    parameters:{ name:string; required:boolean; variadic: boolean; }[];
+    // e.g. -abc --foo bar
+    _rawArgs:string[];
+    // e.g. -a -b -c --foo bar
+    _args:string[];
+    // e.g. bar
+    _rest:string[] = [];
+
     parent:Command<any,any>;
-    subCommands:Command<any,any>[] = [];
+    name:string;
+
+    // e.g. git -p clone git@github.com:vvakame/dtsm.git
+    //          ↑ this!
     options:Option[] = [];
+    // e.g. git -p clone git@github.com:vvakame/dtsm.git
+    //             ↑ this!
+    subCommands:Command<any,any>[] = [];
+    // e.g. git -p clone git@github.com:vvakame/dtsm.git
+    //                   ↑ this!
+    args:Argument[];
+
     parsedOpts:Opt = <any>{};
-    parsedParams:Arg = <any>{};
+    parsedArgs:Arg = <any>{};
 
     constructor(name = "") {
         var args = name.split(/\s+/);
         this.name = args.shift();
+
         var findOptional = false;
         var findVariadic = false;
-        this.parameters = args.map(arg => {
+        this.args = args.map(argStr => {
             if (findVariadic) {
                 throw new Error("parameter is not placed after variadic parameter");
             }
-            var result:{ name:string; required:boolean; variadic: boolean; } = <any>{};
-            switch (arg.charAt(0)) {
-                case '<':
-                    if (findOptional) {
-                        throw new Error("required parameter is not placed after optional parameter");
-                    }
-                    result.required = true;
-                    result.name = arg.slice(1, -1);
-                    break;
-                case '[':
-                    result.name = arg.slice(1, -1);
-                    findOptional = true;
-                    break;
-                default:
-                    throw new Error("unsupported format: " + arg);
+            var arg = new Argument(argStr);
+            if (arg.required && findOptional) {
+                throw new Error("required parameter is not placed after optional parameter");
             }
-            if (/\.\.\.$/.test(result.name)) {
-                result.name = result.name.slice(0, -3);
-                result.variadic = true;
+            if (!arg.required) {
+                findOptional = true;
+            }
+            if (arg.variadic) {
                 findVariadic = true;
             }
-            return result;
+            return arg;
         });
     }
 
@@ -64,9 +68,8 @@ class Command<Opt,Arg> {
         return this;
     }
 
-    // TODO defaultValue
     option(flags:string, description?:string, defaultValue?:any):Command<Opt,Arg> {
-        var option = new Option(flags, description);
+        var option = new Option(flags, description, defaultValue);
         this.options.push(option);
         return this;
     }
@@ -92,72 +95,12 @@ class Command<Opt,Arg> {
         return this;
     }
 
-    helpText():string {
-        var result = "";
-        // usage part
-        result += "  Usage: ";
-        if (this._usage != null) {
-            result += this._usage;
-        } else {
-            result += this._getAncestorsWithMe().map(cmd => cmd.name).join(" ") + " ";
-            if (this.options.length !== 0) {
-                result += "[options] ";
-            }
-            if (this.subCommands.length !== 0) {
-                result += "[command] ";
-            }
-            if (this.parameters.length !== 0) {
-                result += this.parameters.map(param => {
-                    if (param.required) {
-                        return "<" + param.name + (param.variadic ? "..." : "") + ">";
-                    } else {
-                        return "[" + param.name + (param.variadic ? "..." : "") + "]";
-                    }
-                }).join(" ");
-            }
-        }
-        // TODO humanReadableArgName
-        result += "\n\n";
-
-        // options part
-        if (this.options.length !== 0) {
-            result += "  Options:\n\n";
-            var optionsMaxLength = utils.maxLength(this.options.map(opt => opt.flags));
-            result += this.options.map(opt => {
-                var result = "    ";
-                result += utils.pad(opt.flags, optionsMaxLength);
-                result += "  ";
-                result += opt.description || "";
-                result += "\n";
-                return result;
-            }).join("");
-            result += "\n\n";
-        }
-
-        // sub commands part
-        if (this.subCommands.length !== 0) {
-            result += "  Commands:\n\n";
-            var subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
-            result += this.subCommands.map(cmd => {
-                var result = "    ";
-                result += utils.pad(cmd.name, subCommandsMaxLength);
-                result += "  ";
-                result += cmd._description || "";
-                result += "\n";
-                return result;
-            }).join("");
-            result += "\n\n";
-        }
-
-        return result;
-    }
-
     exec():Promise<{}> {
-        return Promise.resolve(this._action(this.parsedOpts, this.parsedParams, this._rest));
+        return Promise.resolve(this._action(this.parsedOpts, this.parsedArgs, this._rest));
     }
 
     parse(argv:string[]):Promise<{}> {
-        var rest = this._processArgs(argv);
+        var rest = this._parseRawArgs(argv);
         // resolve help action
         if (this._args.some(arg => this._help.is(arg))) {
             // include help option. (help for this command
@@ -193,15 +136,15 @@ class Command<Opt,Arg> {
         return this.exec();
     }
 
-    _getAncestorsWithMe():Command<any,any>[] {
+    _getAncestorsAndMe():Command<any,any>[] {
         if (!this.parent) {
             return [this];
         } else {
-            return this.parent._getAncestorsWithMe().concat([this]);
+            return this.parent._getAncestorsAndMe().concat([this]);
         }
     }
 
-    _processArgs(args:string[]) {
+    _parseRawArgs(args:string[]) {
         args = args.slice(0);
         var target:string[] = [];
         var rest:string[] = [];
@@ -223,15 +166,27 @@ class Command<Opt,Arg> {
 
         this._rawArgs = target.slice(0);
         this._args = this._normalize(target);
-        this._rest = this._parseArgs(this._args);
-        this._rest = this._parseParameters(this._rest);
+        this._rest = this._parseOptions(this._args);
+        if (this._matchSubCommand(rest)) {
+            return rest;
+        }
+        this._rest = this._parseArgs(this._rest);
 
         return rest;
     }
 
-    _parseArgs(args:string[]) {
+    _matchSubCommand(rest:string[]):boolean {
+        if (rest == null || !rest[0]) {
+            return false;
+        }
+        var subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
+        return !!subCommand;
+    }
+
+    _parseOptions(args:string[]) {
         args = args.slice(0);
         var rest:string[] = [];
+        var processedOptions:Option[] = [];
         while (args.length !== 0) {
             var arg = args.shift();
             if (arg === "--") {
@@ -244,23 +199,28 @@ class Command<Opt,Arg> {
                 continue;
             }
             args = opt.parse(this.parsedOpts, [arg].concat(args));
+            processedOptions.push(opt);
         }
+        this.options
+            .filter(opt => processedOptions.indexOf(opt) === -1)
+            .forEach(opt => {
+                if (opt.required || opt.optional) {
+                    // string[]
+                    (<any>this.parsedOpts)[opt.name()] = (<any>this.parsedOpts)[opt.name()] || [];
+                    if (opt.defaultValue) {
+                        (<any>this.parsedOpts)[opt.name()].push(opt.defaultValue);
+                    }
+                } else {
+                    (<any>this.parsedOpts)[opt.name()] = opt.defaultValue;
+                }
+            });
         return rest;
     }
 
-    _parseParameters(rest:string[]) {
+    _parseArgs(rest:string[]) {
         rest = rest.slice(0);
-        this.parameters.forEach(param => {
-            if (param.variadic) {
-                (<any>this.parsedParams)[param.name] = rest;
-                rest = [];
-            }
-            var arg = rest.shift();
-            if (param.required && !arg) {
-                // TODO
-                throw new Error(param.name + " is required");
-            }
-            (<any>this.parsedParams)[param.name] = arg;
+        this.args.forEach(argInfo => {
+            rest = argInfo.parse(this.parsedArgs, rest);
         });
         return rest;
     }
@@ -288,6 +248,66 @@ class Command<Opt,Arg> {
                 result.push(arg);
             }
         }
+        return result;
+    }
+
+    helpText():string {
+        var result = "";
+        // usage part
+        result += "  Usage: ";
+        if (this._usage != null) {
+            result += this._usage;
+        } else {
+            result += this._getAncestorsAndMe().map(cmd => cmd.name).join(" ") + " ";
+            if (this.options.length !== 0) {
+                result += "[options] ";
+            }
+            if (this.subCommands.length !== 0) {
+                result += "[command] ";
+            }
+            if (this.args.length !== 0) {
+                result += "[--] ";
+                result += this.args.map(arg => {
+                    if (arg.required) {
+                        return "<" + arg.name + (arg.variadic ? "..." : "") + ">";
+                    } else {
+                        return "[" + arg.name + (arg.variadic ? "..." : "") + "]";
+                    }
+                }).join(" ");
+            }
+        }
+        result += "\n\n";
+
+        // options part
+        if (this.options.length !== 0) {
+            result += "  Options:\n\n";
+            var optionsMaxLength = utils.maxLength(this.options.map(opt => opt.flags));
+            result += this.options.map(opt => {
+                var result = "    ";
+                result += utils.pad(opt.flags, optionsMaxLength);
+                result += "  ";
+                result += opt.description || "";
+                result += "\n";
+                return result;
+            }).join("");
+            result += "\n\n";
+        }
+
+        // sub commands part
+        if (this.subCommands.length !== 0) {
+            result += "  Commands:\n\n";
+            var subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
+            result += this.subCommands.map(cmd => {
+                var result = "    ";
+                result += utils.pad(cmd.name, subCommandsMaxLength);
+                result += "  ";
+                result += cmd._description || "";
+                result += "\n";
+                return result;
+            }).join("");
+            result += "\n\n";
+        }
+
         return result;
     }
 }

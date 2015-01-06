@@ -9,7 +9,7 @@ describe("Option", ()=> {
             assert(opt.long === "--chdir");
             assert(opt.required === true);
             assert(opt.optional === false);
-            assert(opt.bool === true);
+            assert(opt.no === true);
             assert(opt.name() === "chdir");
             assert(opt.is("-C") === true);
             assert(opt.is("--chdir") === true);
@@ -21,7 +21,7 @@ describe("Option", ()=> {
             assert(opt.long === "--cheese");
             assert(opt.required === false);
             assert(opt.optional === true);
-            assert(opt.bool === true);
+            assert(opt.no === true);
             assert(opt.name() === "cheese");
             assert(opt.is("-c") === true);
             assert(opt.is("--cheese") === true);
@@ -33,7 +33,7 @@ describe("Option", ()=> {
             assert(opt.long === "--no-tests");
             assert(opt.required === false);
             assert(opt.optional === false);
-            assert(opt.bool === false);
+            assert(opt.no === false);
             assert(opt.name() === "tests");
             assert(opt.is("-T") === true);
             assert(opt.is("--no-tests") === true);

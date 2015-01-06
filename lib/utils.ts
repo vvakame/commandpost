@@ -1,3 +1,5 @@
+"use strict";
+
 export function maxLength(strs:string[]):number {
     "use strict";
 

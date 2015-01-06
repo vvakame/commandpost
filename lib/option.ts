@@ -1,21 +1,30 @@
+"use strict";
+
 class Option {
     required:boolean;
     optional:boolean;
-    bool:boolean;
+    no:boolean;
     short:string;
     long:string;
     description:string;
 
-    constructor(public flags:string, description?:string) {
+    constructor(public flags:string, description?:string, public defaultValue?:any) {
         this.required = flags.indexOf("<") !== -1;
         this.optional = flags.indexOf("[") !== -1;
-        this.bool = flags.indexOf("-no-") === -1;
+        this.no = flags.indexOf("-no-") === -1;
         var splittedFlags = flags.split(/[ ,|]+/);
         if (splittedFlags.length > 1 && !/^[[<]/.test(splittedFlags[1])) {
             this.short = splittedFlags.shift();
         }
         this.long = splittedFlags.shift();
         this.description = description || '';
+        if (typeof this.defaultValue === "undefined") {
+            if (this.required || this.optional) {
+                this.defaultValue = "";
+            } else {
+                this.defaultValue = !this.no;
+            }
+        }
     }
 
     name() {
@@ -53,7 +62,7 @@ class Option {
             }
         }
 
-        opts[this.name()] = this.bool ? true : false;
+        opts[this.name()] = this.no ? true : false;
         return args.slice(1);
     }
 }

@@ -6,7 +6,7 @@ describe("Command", ()=> {
             var cmd = new Command();
             var remote = cmd.subCommand("remote");
 
-            assert(cmd.name == null);
+            assert(cmd.name === "");
             assert(cmd.parent == null);
             assert(cmd.subCommands.length === 1);
             assert(cmd.subCommands[0] === remote);
@@ -21,7 +21,7 @@ describe("Command", ()=> {
             var cmd = new Command();
             cmd.option("-r, --replace");
 
-            var remote = cmd.subCommand<{config:string[];}>("remote");
+            var remote = cmd.subCommand<{config:string[];},{}>("remote");
             remote.option("-c, --config <file>");
             remote.action((opts, rest) => {
                 assert(opts.config.length === 1);
@@ -34,7 +34,7 @@ describe("Command", ()=> {
             var cmd = new Command();
             cmd.option("-r, --replace");
 
-            var remote = cmd.subCommand<{config:string[];}>("remote");
+            var remote = cmd.subCommand<{config:string[];},{}>("remote");
             remote.option("-c, --config <file>");
             remote.action((opts, rest) => {
                 assert(opts.config.length === 3);
@@ -46,12 +46,12 @@ describe("Command", ()=> {
             return cmd.parse(["-r", "remote", "-c", "hoge.json", "-c", "fuga.json", "--config=piyo.json", "foo.txt"]);
         });
     });
-    describe("#_processArgs", ()=> {
+    describe("#_parseRawArgs", ()=> {
         it("parse args without sub command", ()=> {
             var cmd = new Command();
             cmd.option("-r, --replace");
 
-            var rest = cmd._processArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
+            var rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
 
             assert(cmd._args.length === 5);
             assert(cmd._args[0] === "-r");
@@ -65,7 +65,7 @@ describe("Command", ()=> {
             var remote = cmd.subCommand("remote");
             remote.option("-c, --config <file>");
 
-            var rest = cmd._processArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
+            var rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
 
             assert(cmd._args.length === 1);
             assert(cmd._args[0] === "-r");
@@ -76,7 +76,7 @@ describe("Command", ()=> {
         it("parse args with normalized", ()=> {
             var cmd = new Command();
 
-            cmd._processArgs(["-abc"]);
+            cmd._parseRawArgs(["-abc"]);
 
             assert(cmd._args.length === 3);
             assert(cmd._args[0] === "-a");
@@ -87,7 +87,7 @@ describe("Command", ()=> {
             var cmd = new Command();
             cmd.option("-r, --replace [file]");
 
-            cmd._processArgs(["-r", "hoge.json", "fuga.json", "-r", "--", "piyo.json"]);
+            cmd._parseRawArgs(["-r", "hoge.json", "fuga.json", "-r", "--", "piyo.json"]);
 
             assert(cmd._args.length === 6);
             assert(cmd._args[0] === "-r");
