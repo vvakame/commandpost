@@ -7,7 +7,7 @@
 import lib = require("../lib/index");
 
 var root = lib
-    .create<{replace: boolean; config: string[];}>()
+    .create<{replace: boolean; config: string[];}>("usg")
     .description("foo bar")
     .option("-r, --replace", "replace files")
     .option("-c, --config <file>", "specified config file")
@@ -18,7 +18,7 @@ var root = lib
     });
 
 var remote = root
-    .subCommand<{verbose: boolean;}>("remote")
+    .subCommand<{verbose: boolean;}>("remote <remoteUrl>")
     .description("about remote repos")
     .option("-v, --verbose")
     .action((opts, rest)=> {
@@ -28,7 +28,7 @@ var remote = root
     });
 
 remote
-    .subCommand("add")
+    .subCommand("add <remoteUrls...>")
     .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
     .action((opts, rest)=> {
         return remote

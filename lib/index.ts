@@ -10,13 +10,13 @@ require("es6-promise").polyfill();
 
 import Command = require("./command");
 
-export function create<T>():Command<T> {
+export function create<Opt,Arg>(cmdName:string):Command<Opt,Arg> {
     "use strict";
 
-    return new Command<T>();
+    return new Command<Opt,Arg>(cmdName);
 }
 
-export function exec(cmd:Command<any>, argv:string[]):Promise<{}> {
+export function exec(cmd:Command<any,any>, argv:string[]):Promise<{}> {
     "use strict";
 
     argv = argv.slice(2);
