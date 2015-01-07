@@ -6,4 +6,5 @@
 
 /// <reference path="./commandSpec.ts" />
 /// <reference path="./optionSpec.ts" />
+/// <reference path="./argumentSpec.ts" />
 /// <reference path="./utilsSpec.ts" />

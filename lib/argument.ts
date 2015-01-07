@@ -12,6 +12,7 @@ class Argument {
                 this.name = arg.slice(1, -1);
                 break;
             case '[':
+                this.required = false;
                 this.name = arg.slice(1, -1);
                 break;
             default:
@@ -20,10 +21,15 @@ class Argument {
         if (/\.\.\.$/.test(this.name)) {
             this.name = this.name.slice(0, -3);
             this.variadic = true;
+        } else {
+            this.variadic = false;
         }
     }
 
     parse(opts:any, args:string[]):string[] {
+        if (this.required && this.variadic && args.length === 0) {
+            throw new Error(this.name + " is required more than 1 argument");
+        }
         if (this.variadic) {
             opts[this.name] = args;
             args = [];
