@@ -39,31 +39,28 @@ class Option {
         if (!this.is(args[0])) {
             throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
         }
-        var arg:string;
+        var next = args[1];
         if (this.required) {
-            arg = args[1];
-            if (arg == null) {
+            if (next == null) {
                 throw new Error(args[0] + " is required parameter value");
             }
             opts[this.name()] = opts[this.name()] || [];
-            opts[this.name()].push(arg);
+            opts[this.name()].push(next);
             return args.slice(2);
-        }
-        if (this.optional) {
-            arg = args[1];
-            if (arg == null || (arg.charAt(0) === "-" && arg.length !== 0)) {
+        } else if (this.optional) {
+            if (next != null && !/^-/.test(next)) {
                 opts[this.name()] = opts[this.name()] || [];
-                opts[this.name()].push(arg || "");
-                return args.slice(1);
+                opts[this.name()].push(next);
+                return args.slice(2);
             } else {
                 opts[this.name()] = opts[this.name()] || [];
-                opts[this.name()].push(arg);
-                return args.slice(2);
+                opts[this.name()].push(this.defaultValue);
+                return args.slice(1);
             }
+        } else {
+            opts[this.name()] = this.no ? true : false;
+            return args.slice(1);
         }
-
-        opts[this.name()] = this.no ? true : false;
-        return args.slice(1);
     }
 }
 
