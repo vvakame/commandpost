@@ -127,6 +127,10 @@ class Command<Opt,Arg> {
             }
             return arg;
         });
+
+        this._action = ()=> {
+            process.stdout.write(this.helpText() + '\n');
+        };
     }
 
     /**
