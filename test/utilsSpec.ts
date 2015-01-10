@@ -12,4 +12,9 @@ describe("utils", ()=> {
             assert(utils.pad("foobar", 10, "+") === "foobar++++");
         });
     });
+    describe("chainToLowerCamelCase", ()=> {
+        it("convert chain case to lower camel case", ()=> {
+            assert(utils.chainToLowerCamelCase("foo-bar") === "fooBar");
+        });
+    });
 });

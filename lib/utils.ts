@@ -34,3 +34,29 @@ export function pad(str:string, length:number, pad = " "):string {
     }
     return str;
 }
+
+/**
+ * convert foo-bar to fooBar.
+ * @param str
+ * @returns {string}
+ * @private
+ */
+export function chainToLowerCamelCase(str:string):string {
+    "use strict";
+
+    var nextCamel = false;
+    return str
+        .split("")
+        .map(char => {
+            if (char === "-") {
+                nextCamel = true;
+                return "";
+            } else if (nextCamel) {
+                nextCamel = false;
+                return char.toUpperCase();
+            } else {
+                return char;
+            }
+        })
+        .join("");
+}
