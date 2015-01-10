@@ -15,6 +15,7 @@ interface RootArgs {
 
 var root = lib
     .create<RootOptions, RootArgs>("usg")
+    .version("100.0.0", "-v, --version")
     .description("foo bar")
     .option("-r, --replace", "replace files")
     .option("--no-output", "silent mode")

@@ -22,6 +22,14 @@ class Command<Opt,Arg> {
     /**
      * @private
      */
+    _version:Option;
+    /**
+     * @private
+     */
+    _versionStr:string;
+    /**
+     * @private
+     */
     _action:(opts:Opt, args:Arg, rest:string[])=>any;
 
     /**
@@ -201,6 +209,19 @@ class Command<Opt,Arg> {
     }
 
     /**
+     * add show version option to this command.
+     * @param version
+     * @param flags
+     * @param description
+     * @returns {Command}
+     */
+    version(version:string, flags:string, description:string = "output the version number"):Command<Opt,Arg> {
+        this._version = new Option(flags, description);
+        this._versionStr = version;
+        return this;
+    }
+
+    /**
      * exec action of command.
      * this method MUST call after parse process.
      * @returns {Promise<{}>}
@@ -240,6 +261,13 @@ class Command<Opt,Arg> {
                 }
                 // TODO raise error? pass through?
             }
+        }
+        // resolve version option
+        if (this._version && this._args.some(arg => this._version.is(arg))) {
+            process.stdout.write((this._versionStr || "unknown") + '\n');
+            process.exit(0);
+
+            return Promise.resolve({});
         }
 
         if (rest[0]) {
