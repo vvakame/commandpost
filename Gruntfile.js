@@ -16,11 +16,11 @@ module.exports = function (grunt) {
         ts: {
             options: {
                 compile: true,                 // perform compilation. [true (default) | false]
-                comments: false,               // same as !removeComments. [true | false (default)]
+                comments: true,                // same as !removeComments. [true | false (default)]
                 target: 'es5',                 // target javascript language. [es3 (default) | es5]
                 module: 'commonjs',            // target javascript module style. [amd (default) | commonjs]
                 noImplicitAny: true,
-                sourceMap: true,              // generate a source map for every output js file. [true (default) | false]
+                sourceMap: true,               // generate a source map for every output js file. [true (default) | false]
                 sourceRoot: '',                // where to locate TypeScript files. [(default) '' == source ts location]
                 mapRoot: '',                   // where to locate .map.js files. [(default) '' == generated js location.]
                 declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
@@ -88,6 +88,17 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        dts_bundle: {
+            build: {
+                options: {
+                    name: "commandpost",
+                    main: "lib/index.d.ts",
+                    baseDir: "",
+                    out: "commandpost.d.ts",
+                    prefix: ''
+                }
+            }
+        },
         mochaTest: {
             test: {
                 options: {
@@ -118,7 +129,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask(
         'default',
-        ['ts:clientMain', 'tslint']);
+        ['ts:clientMain', 'tslint', 'dts_bundle']);
 
     grunt.registerTask(
         'test',
