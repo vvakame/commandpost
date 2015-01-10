@@ -21,6 +21,11 @@ export function create<Opt,Arg>(cmdName:string):Command<Opt,Arg> {
 export function exec(cmd:Command<any,any>, argv:string[]):Promise<{}> {
     "use strict";
 
-    argv = argv.slice(2);
-    return cmd.parse(argv);
+    return Promise
+        .resolve(null)
+        .then(()=> {
+            argv = argv.slice(2);
+            // cmd.parse throw an exception often.
+            return cmd.parse(argv);
+        });
 }
