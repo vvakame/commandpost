@@ -3,10 +3,10 @@ import Command = require("../lib/command");
 describe("Command", ()=> {
     describe("#subCommand", ()=> {
         it("create sub command", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             var remote = cmd.subCommand("remote");
 
-            assert(cmd.name === "");
+            assert(cmd.name === "test");
             assert(cmd.parent == null);
             assert(cmd.subCommands.length === 1);
             assert(cmd.subCommands[0] === remote);
@@ -18,7 +18,7 @@ describe("Command", ()=> {
     });
     describe("#parse", ()=> {
         it("parse args with single value", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             cmd.option("-r, --replace");
 
             var remote = cmd.subCommand<{config:string[];},{}>("remote");
@@ -31,7 +31,7 @@ describe("Command", ()=> {
             return cmd.parse(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
         });
         it("parse args with multiple value", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             cmd.option("-r, --replace");
 
             var remote = cmd.subCommand<{config:string[];},{}>("remote");
@@ -48,7 +48,7 @@ describe("Command", ()=> {
     });
     describe("#_parseRawArgs", ()=> {
         it("parse args without sub command", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             cmd.option("-r, --replace");
 
             var rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
@@ -59,7 +59,7 @@ describe("Command", ()=> {
             assert(rest.length === 0);
         });
         it("parse args with sub command", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             cmd.option("-r, --replace");
 
             var remote = cmd.subCommand("remote");
@@ -74,7 +74,7 @@ describe("Command", ()=> {
             assert(rest[0] === "remote");
         });
         it("parse args with normalized", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
 
             cmd._parseRawArgs(["-abc"]);
 
@@ -84,7 +84,7 @@ describe("Command", ()=> {
             assert(cmd._args[2] === "-c");
         });
         it("parse args with --", ()=> {
-            var cmd = new Command();
+            var cmd = new Command("test");
             cmd.option("-r, --replace [file]");
 
             cmd._parseRawArgs(["-r", "hoge.json", "fuga.json", "-r", "--", "piyo.json"]);

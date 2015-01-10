@@ -5,36 +5,99 @@ import Argument = require("./argument");
 
 import utils = require("./utils");
 
+// jsdoc, see constructor.
 class Command<Opt,Arg> {
+    /**
+     * @private
+     */
     _description:string;
+    /**
+     * @private
+     */
     _usage:string;
+    /**
+     * @private
+     */
     _help = new Option("-h, --help", "display help");
+    /**
+     * @private
+     */
     _action:(opts:Opt, args:Arg, rest:string[])=>any;
 
-    // e.g. -abc --foo bar
+    /**
+     * e.g. -abc --foo bar
+     * @private
+     */
     _rawArgs:string[];
-    // e.g. -a -b -c --foo bar
+    /**
+     * e.g. -a -b -c --foo bar
+     * @private
+     */
     _args:string[];
-    // e.g. bar
+    /**
+     * e.g. bar
+     * @private
+     */
     _rest:string[] = [];
 
+    /**
+     * parent command.
+     */
     parent:Command<any,any>;
+    /**
+     * name of this command.
+     */
     name:string;
 
-    // e.g. git -p clone git@github.com:vvakame/dtsm.git
-    //          ↑ this!
+    /**
+     * e.g.
+     * ```
+     *   git -p clone git@github.com:vvakame/dtsm.git
+     *       ↑ this!
+     * ```
+     * @type {Array}
+     */
     options:Option[] = [];
-    // e.g. git -p clone git@github.com:vvakame/dtsm.git
-    //             ↑ this!
+    /**
+     * e.g.
+     * ```
+     *   git -p clone git@github.com:vvakame/dtsm.git
+     *          ↑ this!
+     * ```
+     * @type {Array}
+     */
     subCommands:Command<any,any>[] = [];
-    // e.g. git -p clone git@github.com:vvakame/dtsm.git
-    //                   ↑ this!
+    /**
+     * e.g.
+     * ```
+     *   git -p clone git@github.com:vvakame/dtsm.git
+     *                ↑ this!
+     * ```
+     * @type {Array}
+     */
     args:Argument[];
 
+    /**
+     * parsed option values.
+     * @type {any}
+     */
     parsedOpts:Opt = <any>{};
+    /**
+     * parsed option arguments.
+     * @type {any}
+     */
     parsedArgs:Arg = <any>{};
 
-    constructor(name = "") {
+    /**
+     * class of command.
+     * ```
+     * cmd -v sub --path foo/bar buzz.txt
+     *        ↑ this one!
+     * ```
+     * @param name name and flags pass flags pass 'foo'(sub command) or 'foo <bar>'(sub command & required argument) or 'foo [bar]'(sub command & optional argument) or 'foo <bar...>'(sub command & required variadic argument) or 'foo [bar...]'(sub command & optional variadic argument).
+     * @class
+     */
+    constructor(name:string) {
         var args = name.split(/\s+/);
         this.name = args.shift();
 
@@ -58,27 +121,57 @@ class Command<Opt,Arg> {
         });
     }
 
+    /**
+     * set description for this command.
+     * @param desc
+     * @returns {Command}
+     * @method
+     */
     description(desc:string):Command<Opt,Arg> {
         this._description = desc;
         return this;
     }
 
+    /**
+     * set usage for this command.
+     * @param usage
+     * @returns {Command}
+     * @method
+     */
     usage(usage:string):Command<Opt,Arg> {
         this._usage = usage;
         return this;
     }
 
+    /**
+     * add option for this command.
+     * see {@link Option}.
+     * @param flags
+     * @param description
+     * @param defaultValue
+     * @returns {Command}
+     */
     option(flags:string, description?:string, defaultValue?:any):Command<Opt,Arg> {
         var option = new Option(flags, description, defaultValue);
         this.options.push(option);
         return this;
     }
 
+    /**
+     * add action at this command selected.
+     * @param fn
+     * @returns {Command}
+     */
     action(fn:(opts:Opt, args:Arg, rest:string[])=>any):Command<Opt,Arg> {
         this._action = fn;
         return this;
     }
 
+    /**
+     * create sub command.
+     * @param name
+     * @returns {Command<Opt2, Arg2>} new command instance
+     */
     subCommand<Opt2,Arg2>(name:string):Command<Opt2, Arg2> {
         var command = new Command<Opt2,Arg2>(name);
         command.parent = this;
@@ -86,19 +179,41 @@ class Command<Opt,Arg> {
         return command;
     }
 
+    /**
+     * check arg is matches this command.
+     * @param arg
+     * @returns {boolean}
+     */
     is(arg:string) {
         return this.name === arg;
     }
 
+    /**
+     * add help this option.
+     * in general case, use default help option.
+     * @param flags
+     * @param description
+     * @returns {Command}
+     */
     help(flags:string, description:string) {
         this._help = new Option(flags, description);
         return this;
     }
 
+    /**
+     * exec action of command.
+     * this method MUST call after parse process.
+     * @returns {Promise<{}>}
+     */
     exec():Promise<{}> {
         return Promise.resolve(this._action(this.parsedOpts, this.parsedArgs, this._rest));
     }
 
+    /**
+     * parse argv.
+     * @param argv
+     * @returns {Promise<{}>}
+     */
     parse(argv:string[]):Promise<{}> {
         var rest = this._parseRawArgs(argv);
         // resolve help action
@@ -136,6 +251,10 @@ class Command<Opt,Arg> {
         return this.exec();
     }
 
+    /**
+     * @returns {*}
+     * @private
+     */
     _getAncestorsAndMe():Command<any,any>[] {
         if (!this.parent) {
             return [this];
@@ -144,6 +263,11 @@ class Command<Opt,Arg> {
         }
     }
 
+    /**
+     * @param args
+     * @returns {string[]}
+     * @private
+     */
     _parseRawArgs(args:string[]) {
         args = args.slice(0);
         var target:string[] = [];
@@ -175,6 +299,11 @@ class Command<Opt,Arg> {
         return rest;
     }
 
+    /**
+     * @param rest
+     * @returns {boolean}
+     * @private
+     */
     _matchSubCommand(rest:string[]):boolean {
         if (rest == null || !rest[0]) {
             return false;
@@ -183,6 +312,11 @@ class Command<Opt,Arg> {
         return !!subCommand;
     }
 
+    /**
+     * @param args
+     * @returns {string[]}
+     * @private
+     */
     _parseOptions(args:string[]) {
         args = args.slice(0);
         var rest:string[] = [];
@@ -217,6 +351,11 @@ class Command<Opt,Arg> {
         return rest;
     }
 
+    /**
+     * @param rest
+     * @returns {string[]}
+     * @private
+     */
     _parseArgs(rest:string[]) {
         rest = rest.slice(0);
         this.args.forEach(argInfo => {
@@ -225,6 +364,11 @@ class Command<Opt,Arg> {
         return rest;
     }
 
+    /**
+     * @param args
+     * @returns {string[]}
+     * @private
+     */
     _normalize(args:string[]):string[] {
         var result:string[] = [];
         for (var i = 0; i < args.length; i++) {
@@ -251,6 +395,10 @@ class Command<Opt,Arg> {
         return result;
     }
 
+    /**
+     * generate help text.
+     * @returns {string}
+     */
     helpText():string {
         var result = "";
         // usage part
