@@ -1,7 +1,7 @@
 {
   "name": "commandpost",
   "author": "vvakame",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "option parser",
   "main": "./lib/index",
   "repository": {
