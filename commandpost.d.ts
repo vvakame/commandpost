@@ -36,6 +36,14 @@ declare module 'commandpost/lib/command' {
             /**
                 * @private
                 */
+            _version: Option;
+            /**
+                * @private
+                */
+            _versionStr: string;
+            /**
+                * @private
+                */
             _action: (opts: Opt, args: Arg, rest: string[]) => any;
             /**
                 * e.g. -abc --foo bar
@@ -156,6 +164,14 @@ declare module 'commandpost/lib/command' {
                 * @returns {Command}
                 */
             help(flags: string, description: string): Command<Opt, Arg>;
+            /**
+                * add show version option to this command.
+                * @param version
+                * @param flags
+                * @param description
+                * @returns {Command}
+                */
+            version(version: string, flags: string, description?: string): Command<Opt, Arg>;
             /**
                 * exec action of command.
                 * this method MUST call after parse process.
