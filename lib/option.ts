@@ -1,5 +1,7 @@
 "use strict";
 
+import utils = require("./utils");
+
 // jsdoc, see constructor.
 class Option {
     /** this option need parameter value. it is required. */
@@ -90,25 +92,26 @@ class Option {
             throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
         }
         var next = args[1];
+        var propertyName = utils.chainToLowerCamelCase(this.name());
         if (this.required) {
             if (next == null) {
                 throw new Error(args[0] + " is required parameter value");
             }
-            opts[this.name()] = opts[this.name()] || [];
-            opts[this.name()].push(next);
+            opts[propertyName] = opts[propertyName] || [];
+            opts[propertyName].push(next);
             return args.slice(2);
         } else if (this.optional) {
             if (next != null && !/^-/.test(next)) {
-                opts[this.name()] = opts[this.name()] || [];
-                opts[this.name()].push(next);
+                opts[propertyName] = opts[propertyName] || [];
+                opts[propertyName].push(next);
                 return args.slice(2);
             } else {
-                opts[this.name()] = opts[this.name()] || [];
-                opts[this.name()].push(this.defaultValue);
+                opts[propertyName] = opts[propertyName] || [];
+                opts[propertyName].push(this.defaultValue);
                 return args.slice(1);
             }
         } else {
-            opts[this.name()] = this.no ? true : false;
+            opts[propertyName] = this.no ? true : false;
             return args.slice(1);
         }
     }

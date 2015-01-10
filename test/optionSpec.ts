@@ -93,5 +93,19 @@ describe("Option", ()=> {
             assert(opts.chdir[0] === ""); // TODO is this right?
             assert(rest.length === 0);
         });
+        it("property name convert chain case to lower camel case", ()=> {
+            var opt = new Option("--dry-run");
+
+            var opts:any = {};
+            opt.parse(opts, ["--dry-run"]);
+            assert(opts.dryRun);
+        });
+        it("property name convert chain case to lower camel case", ()=> {
+            var opt = new Option("--no-exec");
+
+            var opts:any = {};
+            opt.parse(opts, ["--no-exec"]);
+            assert(opts.exec === false);
+        });
     });
 });
