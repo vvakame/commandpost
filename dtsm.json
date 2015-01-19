@@ -5,16 +5,16 @@
   "bundle": null,
   "dependencies": {
     "es6-promise/es6-promise.d.ts": {
-      "ref": "1fb0d8c3e30156e69a86271d0532d68d71e0735c"
+      "ref": "e84f8a2397f9efb062b6f15e1434cdc11d9cfd34"
     },
     "node/node.d.ts": {
-      "ref": "1fb0d8c3e30156e69a86271d0532d68d71e0735c"
+      "ref": "e84f8a2397f9efb062b6f15e1434cdc11d9cfd34"
     },
     "mocha/mocha.d.ts": {
-      "ref": "1fb0d8c3e30156e69a86271d0532d68d71e0735c"
+      "ref": "e84f8a2397f9efb062b6f15e1434cdc11d9cfd34"
     },
     "power-assert/power-assert.d.ts": {
-      "ref": "1fb0d8c3e30156e69a86271d0532d68d71e0735c"
+      "ref": "e84f8a2397f9efb062b6f15e1434cdc11d9cfd34"
     }
   }
 }
