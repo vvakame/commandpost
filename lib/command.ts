@@ -49,6 +49,11 @@ class Command<Opt,Arg> {
     _rest:string[] = [];
 
     /**
+     * @private
+     */
+    _allowUnknownOption:boolean;
+
+    /**
      * parent command.
      */
     parent:Command<any,any>;
@@ -95,6 +100,12 @@ class Command<Opt,Arg> {
      * @type {any}
      */
     parsedArgs:Arg = <any>{};
+
+    /**
+     * unknown options.
+     * @type {Array}
+     */
+    unknownOptions:string[] = [];
 
     /**
      * class of command.
@@ -170,6 +181,17 @@ class Command<Opt,Arg> {
     }
 
     /**
+     * allow unknown option.
+     * by default, An error occured if unknown option is included.
+     * @param flag
+     * @returns {Command}
+     */
+    allowUnknownOption(flag = true):Command<Opt,Arg> {
+        this._allowUnknownOption = flag;
+        return this;
+    }
+
+    /**
      * add action at this command selected.
      * @param fn
      * @returns {Command}
@@ -240,47 +262,51 @@ class Command<Opt,Arg> {
      * @returns {Promise<{}>}
      */
     parse(argv:string[]):Promise<{}> {
-        var rest = this._parseRawArgs(argv);
-        // resolve help action
-        if (this._args.some(arg => this._help.is(arg))) {
-            // include help option. (help for this command
-            process.stdout.write(this.helpText() + '\n');
-            process.exit(0);
+        return Promise
+            .resolve(null)
+            .then(()=> {
+                var rest = this._parseRawArgs(argv);
+                // resolve help action
+                if (this._args.some(arg => this._help.is(arg))) {
+                    // include help option. (help for this command
+                    process.stdout.write(this.helpText() + '\n');
+                    process.exit(0);
 
-            return Promise.resolve({});
-        }
-        var subCommand:Command<any,any>;
-        if (this.parent == null) {
-            // only for top level (why? because I can't decide which is natural syntax between `foo help bar buzz` and `foo bar help buzz`.
-            if (this._rest.some(arg => this._help.name() === arg)) {
-                // include help sub command. (help for deeper level sub command
+                    return Promise.resolve({});
+                }
+                var subCommand:Command<any,any>;
+                if (this.parent == null) {
+                    // only for top level (why? because I can't decide which is natural syntax between `foo help bar buzz` and `foo bar help buzz`.
+                    if (this._rest.some(arg => this._help.name() === arg)) {
+                        // include help sub command. (help for deeper level sub command
+                        if (rest[0]) {
+                            subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
+                            if (subCommand) {
+                                process.stdout.write(subCommand.helpText() + '\n');
+                                process.exit(0);
+
+                                return Promise.resolve({});
+                            }
+                        }
+                        // TODO raise error? pass through?
+                    }
+                }
+                // resolve version option
+                if (this._version && this._args.some(arg => this._version.is(arg))) {
+                    process.stdout.write((this._versionStr || "unknown") + '\n');
+                    process.exit(0);
+
+                    return Promise.resolve({});
+                }
+
                 if (rest[0]) {
                     subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
                     if (subCommand) {
-                        process.stdout.write(subCommand.helpText() + '\n');
-                        process.exit(0);
-
-                        return Promise.resolve({});
+                        return subCommand.parse(rest.slice(1));
                     }
                 }
-                // TODO raise error? pass through?
-            }
-        }
-        // resolve version option
-        if (this._version && this._args.some(arg => this._version.is(arg))) {
-            process.stdout.write((this._versionStr || "unknown") + '\n');
-            process.exit(0);
-
-            return Promise.resolve({});
-        }
-
-        if (rest[0]) {
-            subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
-            if (subCommand) {
-                return subCommand.parse(rest.slice(1));
-            }
-        }
-        return this.exec();
+                return this.exec();
+            });
     }
 
     /**
@@ -323,6 +349,15 @@ class Command<Opt,Arg> {
         this._rawArgs = target.slice(0);
         this._args = this._normalize(target);
         this._rest = this._parseOptions(this._args);
+        var cmds = this._getAncestorsAndMe();
+        var allowUnknownOption = cmds.reverse().map(cmd => cmd._allowUnknownOption).filter(allowUnknownOption => typeof allowUnknownOption !== "undefined")[0];
+        if (this.unknownOptions.length !== 0 && !allowUnknownOption) {
+            var errMsg = "unknown option";
+            errMsg += this.unknownOptions.length === 1 ? " " : "s ";
+            errMsg += this.unknownOptions.join(", ") + "\n";
+            errMsg += this.helpText();
+            throw new Error(errMsg);
+        }
         if (this._matchSubCommand(rest)) {
             return rest;
         }
@@ -362,6 +397,9 @@ class Command<Opt,Arg> {
             var opt = this.options.filter(opt => opt.is(arg))[0];
             if (!opt) {
                 rest.push(arg);
+                if (arg.indexOf("-") === 0 && !this._help.is(arg) && (!this._version || !this._version.is(arg))) {
+                    this.unknownOptions.push(arg);
+                }
                 continue;
             }
             args = opt.parse(this.parsedOpts, [arg].concat(args));

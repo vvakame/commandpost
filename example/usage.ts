@@ -51,9 +51,10 @@ interface RemoteAddArgs {
     remoteUrls: string[];
 }
 
-remote
+var add = remote
     .subCommand<RemoteAddOptions,RemoteAddArgs>("add <remoteUrls...>")
     .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
+    .allowUnknownOption()
     .action((opts, args, rest) => {
         return remote
             .exec()
@@ -65,7 +66,17 @@ remote
                 console.log("!root", root.parsedOpts, root.parsedArgs, root._rest);
                 console.log("!remote", remote.parsedOpts, remote.parsedArgs, remote._rest);
                 console.log("!remote add", opts, args, rest);
+                console.log("!remote add unknown options", add.unknownOptions);
             });
     });
 
-lib.exec(root, process.argv);
+lib
+    .exec(root, process.argv)
+    .catch(err => {
+        if (err instanceof Error) {
+            console.error(err.stack);
+        } else {
+            console.error(err);
+        }
+        process.exit(1);
+    });

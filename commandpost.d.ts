@@ -61,6 +61,10 @@ declare module 'commandpost/lib/command' {
                 */
             _rest: string[];
             /**
+                * @private
+                */
+            _allowUnknownOption: boolean;
+            /**
                 * parent command.
                 */
             parent: Command<any, any>;
@@ -106,6 +110,11 @@ declare module 'commandpost/lib/command' {
                 */
             parsedArgs: Arg;
             /**
+                * unknown options.
+                * @type {Array}
+                */
+            unknownOptions: string[];
+            /**
                 * class of command.
                 * ```
                 * cmd -v sub --path foo/bar buzz.txt
@@ -138,6 +147,13 @@ declare module 'commandpost/lib/command' {
                 * @returns {Command}
                 */
             option(flags: string, description?: string, defaultValue?: any): Command<Opt, Arg>;
+            /**
+                * allow unknown option.
+                * by default, An error occured if unknown option is included.
+                * @param flag
+                * @returns {Command}
+                */
+            allowUnknownOption(flag?: boolean): Command<Opt, Arg>;
             /**
                 * add action at this command selected.
                 * @param fn

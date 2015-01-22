@@ -16,6 +16,27 @@ describe("Command", ()=> {
             assert(remote.subCommands.length === 0);
         });
     });
+    describe("#allowUnknownOption", ()=> {
+        it("not allowed unknown option default", ()=> {
+            var cmd = new Command("test");
+            return cmd
+                .parse(["--unknown"])
+                .then(()=> {
+                    throw new Error("expected error is not raised");
+                }, ()=> {
+                    return true;
+                });
+        });
+        it("allowed unknown option if allowUnknownOption() called", ()=> {
+            var cmd = new Command("test");
+            return cmd
+                .allowUnknownOption()
+                .action(()=> {
+                    false;
+                })
+                .parse(["--unknown"]);
+        });
+    });
     describe("#parse", ()=> {
         it("parse args with single value", ()=> {
             var cmd = new Command("test");
@@ -50,6 +71,7 @@ describe("Command", ()=> {
         it("parse args without sub command", ()=> {
             var cmd = new Command("test");
             cmd.option("-r, --replace");
+            cmd.option("-c");
 
             var rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
 
@@ -75,6 +97,9 @@ describe("Command", ()=> {
         });
         it("parse args with normalized", ()=> {
             var cmd = new Command("test");
+            cmd.option("-a");
+            cmd.option("-b");
+            cmd.option("-c");
 
             cmd._parseRawArgs(["-abc"]);
 
