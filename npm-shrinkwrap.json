@@ -1,6 +1,6 @@
 {
   "name": "commandpost",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "dependencies": {
     "es6-promise": {
       "version": "2.0.1",
@@ -291,7 +291,7 @@
         },
         "hooker": {
           "version": "0.2.3",
-          "from": "hooker@~0.2.3",
+          "from": "hooker@^0.2.3",
           "resolved": "https://registry.npmjs.org/hooker/-/hooker-0.2.3.tgz"
         },
         "iconv-lite": {
@@ -512,7 +512,7 @@
             },
             "mkdirp": {
               "version": "0.5.0",
-              "from": "mkdirp@0.5.0",
+              "from": "mkdirp@^0.5.0",
               "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.0.tgz",
               "dependencies": {
                 "minimist": {
@@ -2294,13 +2294,13 @@
       }
     },
     "grunt-mocha-test": {
-      "version": "0.12.6",
-      "from": "grunt-mocha-test@0.12.6",
-      "resolved": "https://registry.npmjs.org/grunt-mocha-test/-/grunt-mocha-test-0.12.6.tgz",
+      "version": "0.12.7",
+      "from": "grunt-mocha-test@0.12.7",
+      "resolved": "https://registry.npmjs.org/grunt-mocha-test/-/grunt-mocha-test-0.12.7.tgz",
       "dependencies": {
         "hooker": {
           "version": "0.2.3",
-          "from": "hooker@~0.2.3",
+          "from": "hooker@^0.2.3",
           "resolved": "https://registry.npmjs.org/hooker/-/hooker-0.2.3.tgz"
         },
         "mkdirp": {
@@ -2570,9 +2570,9 @@
               }
             },
             "marked": {
-              "version": "0.3.2",
+              "version": "0.3.3",
               "from": "marked@^0.3.2",
-              "resolved": "https://registry.npmjs.org/marked/-/marked-0.3.2.tgz"
+              "resolved": "https://registry.npmjs.org/marked/-/marked-0.3.3.tgz"
             },
             "highlight.js": {
               "version": "8.4.0",
@@ -2589,9 +2589,9 @@
       }
     },
     "load-grunt-tasks": {
-      "version": "2.0.0",
-      "from": "load-grunt-tasks@2.0.0",
-      "resolved": "https://registry.npmjs.org/load-grunt-tasks/-/load-grunt-tasks-2.0.0.tgz",
+      "version": "3.0.0",
+      "from": "load-grunt-tasks@3.0.0",
+      "resolved": "https://registry.npmjs.org/load-grunt-tasks/-/load-grunt-tasks-3.0.0.tgz",
       "dependencies": {
         "findup-sync": {
           "version": "0.2.1",
@@ -2600,7 +2600,7 @@
           "dependencies": {
             "glob": {
               "version": "4.3.5",
-              "from": "glob@~4.3.0",
+              "from": "glob@^4.0.2",
               "resolved": "https://registry.npmjs.org/glob/-/glob-4.3.5.tgz",
               "dependencies": {
                 "inflight": {
@@ -2739,7 +2739,7 @@
         },
         "escape-string-regexp": {
           "version": "1.0.2",
-          "from": "escape-string-regexp@1.0.2",
+          "from": "escape-string-regexp@^1.0.0",
           "resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.2.tgz"
         },
         "glob": {
@@ -2800,7 +2800,7 @@
         },
         "mkdirp": {
           "version": "0.5.0",
-          "from": "mkdirp@0.5.0",
+          "from": "mkdirp@^0.5.0",
           "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.0.tgz",
           "dependencies": {
             "minimist": {
@@ -2972,7 +2972,7 @@
               "dependencies": {
                 "ansi-regex": {
                   "version": "0.2.1",
-                  "from": "ansi-regex@^0.2.1",
+                  "from": "ansi-regex@^0.2.0",
                   "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
                 }
               }
