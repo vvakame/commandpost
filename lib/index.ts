@@ -7,7 +7,7 @@ try {
 }
 require("es6-promise").polyfill();
 
-import Command = require("./command");
+import Command from "./command";
 
 /**
  * Create new top level command.

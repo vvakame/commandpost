@@ -1,4 +1,4 @@
-import Option = require("../lib/option");
+import Option from "../lib/option";
 
 describe("Option", ()=> {
     describe("constructor", ()=> {

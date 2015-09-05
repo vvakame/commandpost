@@ -1,4 +1,4 @@
-import Command = require("../lib/command");
+import Command from "../lib/command";
 
 describe("Command", ()=> {
     describe("#subCommand", ()=> {

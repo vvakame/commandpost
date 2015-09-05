@@ -1,9 +1,9 @@
 "use strict";
 
-import utils = require("./utils");
+import * as utils from "./utils";
 
 // jsdoc, see constructor.
-class Option {
+export default class Option {
     /** this option need parameter value. it is required. */
     required:boolean;
     /** this option need parameter value. it is optional. */
@@ -116,5 +116,3 @@ class Option {
         }
     }
 }
-
-export = Option;

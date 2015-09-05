@@ -1,7 +1,7 @@
 "use strict";
 
 // jsdoc, see constructor.
-class Argument {
+export default class Argument {
     /** argument name */
     name:string;
     /** this argument is required */
@@ -74,5 +74,3 @@ class Argument {
         return args;
     }
 }
-
-export = Argument;

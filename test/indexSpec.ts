@@ -4,7 +4,7 @@
 /// <reference path="../typings/mocha/mocha.d.ts" />
 /// <reference path="../typings/power-assert/power-assert.d.ts" />
 
-/// <reference path="./commandSpec.ts" />
-/// <reference path="./optionSpec.ts" />
-/// <reference path="./argumentSpec.ts" />
-/// <reference path="./utilsSpec.ts" />
+export * from "./commandSpec";
+export * from "./optionSpec";
+export * from "./argumentSpec";
+export * from "./utilsSpec";

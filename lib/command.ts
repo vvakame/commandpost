@@ -1,12 +1,12 @@
 "use strict";
 
-import Option = require("./option");
-import Argument = require("./argument");
+import Option from "./option";
+import Argument from "./argument";
 
-import utils = require("./utils");
+import * as utils from "./utils";
 
 // jsdoc, see constructor.
-class Command<Opt,Arg> {
+export default class Command<Opt,Arg> {
     /**
      * @private
      */
@@ -529,5 +529,3 @@ class Command<Opt,Arg> {
         return result;
     }
 }
-
-export = Command;

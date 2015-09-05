@@ -1,4 +1,4 @@
-import Argument = require("../lib/argument");
+import Argument from "../lib/argument";
 
 describe("Argument", ()=> {
     describe("constructor", ()=> {
