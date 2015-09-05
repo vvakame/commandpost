@@ -26,7 +26,11 @@ module.exports = function (grunt) {
                 declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
             },
             clientMain: {
-                src: ['<%= opt.client.tsMain %>/index.ts'],
+                src: [
+                    '<%= opt.client.tsMain %>/index.ts',
+                    'typings/node/*.d.ts',
+                    'typings/es6-promise/*.d.ts',
+                ],
                 options: {
                     declaration: true
                 }
@@ -88,17 +92,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        dts_bundle: {
-            build: {
-                options: {
-                    name: "commandpost",
-                    main: "lib/index.d.ts",
-                    baseDir: "",
-                    out: "commandpost.d.ts",
-                    prefix: ''
-                }
-            }
-        },
         mochaTest: {
             test: {
                 options: {
@@ -129,7 +122,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask(
         'default',
-        ['ts:clientMain', 'tslint', 'dts_bundle']);
+        ['ts:clientMain', 'tslint']);
 
     grunt.registerTask(
         'test',
