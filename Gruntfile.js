@@ -28,8 +28,7 @@ module.exports = function (grunt) {
             clientMain: {
                 src: [
                     '<%= opt.client.tsMain %>/index.ts',
-                    'typings/node/*.d.ts',
-                    'typings/es6-promise/*.d.ts',
+                    'typings/node/*.d.ts'
                 ],
                 options: {
                     declaration: true

@@ -1,10 +1,11 @@
+/// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
 /// <reference path="../typings/node/node.d.ts" />
 
 // sample.
 // tsc --module commonjs --target es5 --noImplicitAny usage.ts
 // node usage.js -r -c a.json b.txt --config=c.json remote -v d add e.txt -- f.txt
 
-import lib = require("../lib/index");
+import * as lib from "../lib";
 
 interface RootOptions {
     replace: boolean;

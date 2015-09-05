@@ -2,9 +2,6 @@
   "path": "typings",
   "bundle": null,
   "dependencies": {
-    "es6-promise/es6-promise.d.ts": {
-      "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
-    },
     "node/node.d.ts": {
       "ref": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },

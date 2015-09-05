@@ -1,6 +1,6 @@
 {
   "name": "commandpost",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "dependencies": {
     "es6-promise": {
       "version": "3.0.2",
@@ -465,7 +465,7 @@
       "dependencies": {
         "rimraf": {
           "version": "2.2.8",
-          "from": "rimraf@>=2.2.1 <2.3.0",
+          "from": "rimraf@>=2.2.8 <2.3.0",
           "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz"
         }
       }
@@ -2786,7 +2786,7 @@
             },
             "esprima": {
               "version": "2.6.0",
-              "from": "esprima@>=2.5.0 <3.0.0",
+              "from": "esprima@>=2.0.0 <3.0.0",
               "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.6.0.tgz"
             },
             "estraverse": {
@@ -2821,7 +2821,7 @@
                 },
                 "indexof": {
                   "version": "0.0.1",
-                  "from": "indexof@0.0.1",
+                  "from": "indexof@>=0.0.1 <0.0.2",
                   "resolved": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz"
                 },
                 "traverse": {

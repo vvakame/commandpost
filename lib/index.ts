@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
+
 "use strict";
 
 try {
@@ -5,7 +7,12 @@ try {
     require("source-map-support").install();
 } catch (e) {
 }
-require("es6-promise").polyfill();
+try {
+    if (typeof Promise === "undefined") {
+        require("es6-promise").polyfill();
+    }
+} catch (e) {
+}
 
 import Command from "./command";
 
