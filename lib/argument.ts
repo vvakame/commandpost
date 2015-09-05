@@ -3,11 +3,11 @@
 // jsdoc, see constructor.
 export default class Argument {
     /** argument name */
-    name:string;
+    name: string;
     /** this argument is required */
-    required:boolean;
+    required: boolean;
     /** this argument is variadic */
-    variadic:boolean;
+    variadic: boolean;
 
     /**
      * class of argument.
@@ -18,7 +18,7 @@ export default class Argument {
      * @param arg pass '<foo>'(required) or '[foo]'(optional) or '<foo...>'(required & variadic) or '[foo...]'(optional & variadic)
      * @class
      */
-    constructor(arg:string) {
+    constructor(arg: string) {
         switch (arg.charAt(0)) {
             case '<':
                 this.required = true;
@@ -57,7 +57,7 @@ export default class Argument {
      * @param args
      * @returns {string[]} rest args
      */
-    parse(opts:any, args:string[]):string[] {
+    parse(opts: any, args: string[]): string[] {
         if (this.required && this.variadic && args.length === 0) {
             throw new Error(this.name + " is required more than 1 argument");
         }

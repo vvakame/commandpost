@@ -6,15 +6,15 @@ import Argument from "./argument";
 import * as utils from "./utils";
 
 // jsdoc, see constructor.
-export default class Command<Opt,Arg> {
+export default class Command<Opt, Arg> {
     /**
      * @private
      */
-    _description:string;
+    _description: string;
     /**
      * @private
      */
-    _usage:string;
+    _usage: string;
     /**
      * @private
      */
@@ -22,45 +22,45 @@ export default class Command<Opt,Arg> {
     /**
      * @private
      */
-    _version:Option;
+    _version: Option;
     /**
      * @private
      */
-    _versionStr:string;
+    _versionStr: string;
     /**
      * @private
      */
-    _action:(opts:Opt, args:Arg, rest:string[])=>any;
+    _action: (opts: Opt, args: Arg, rest: string[]) => any;
 
     /**
      * e.g. -abc --foo bar
      * @private
      */
-    _rawArgs:string[];
+    _rawArgs: string[];
     /**
      * e.g. -a -b -c --foo bar
      * @private
      */
-    _args:string[];
+    _args: string[];
     /**
      * e.g. bar
      * @private
      */
-    _rest:string[] = [];
+    _rest: string[] = [];
 
     /**
      * @private
      */
-    _allowUnknownOption:boolean;
+    _allowUnknownOption: boolean;
 
     /**
      * parent command.
      */
-    parent:Command<any,any>;
+    parent: Command<any, any>;
     /**
      * name of this command.
      */
-    name:string;
+    name: string;
 
     /**
      * e.g.
@@ -70,7 +70,7 @@ export default class Command<Opt,Arg> {
      * ```
      * @type {Array}
      */
-    options:Option[] = [];
+    options: Option[] = [];
     /**
      * e.g.
      * ```
@@ -79,7 +79,7 @@ export default class Command<Opt,Arg> {
      * ```
      * @type {Array}
      */
-    subCommands:Command<any,any>[] = [];
+    subCommands: Command<any, any>[] = [];
     /**
      * e.g.
      * ```
@@ -88,24 +88,24 @@ export default class Command<Opt,Arg> {
      * ```
      * @type {Array}
      */
-    args:Argument[];
+    args: Argument[];
 
     /**
      * parsed option values.
      * @type {any}
      */
-    parsedOpts:Opt = <any>{};
+    parsedOpts: Opt = <any>{};
     /**
      * parsed option arguments.
      * @type {any}
      */
-    parsedArgs:Arg = <any>{};
+    parsedArgs: Arg = <any>{};
 
     /**
      * unknown options.
      * @type {Array}
      */
-    unknownOptions:string[] = [];
+    unknownOptions: string[] = [];
 
     /**
      * class of command.
@@ -116,7 +116,7 @@ export default class Command<Opt,Arg> {
      * @param name name and flags pass flags pass 'foo'(sub command) or 'foo <bar>'(sub command & required argument) or 'foo [bar]'(sub command & optional argument) or 'foo <bar...>'(sub command & required variadic argument) or 'foo [bar...]'(sub command & optional variadic argument).
      * @class
      */
-    constructor(name:string) {
+    constructor(name: string) {
         var args = name.split(/\s+/);
         this.name = args.shift();
 
@@ -139,7 +139,7 @@ export default class Command<Opt,Arg> {
             return arg;
         });
 
-        this._action = ()=> {
+        this._action = () => {
             process.stdout.write(this.helpText() + '\n');
         };
     }
@@ -150,7 +150,7 @@ export default class Command<Opt,Arg> {
      * @returns {Command}
      * @method
      */
-    description(desc:string):Command<Opt,Arg> {
+    description(desc: string): Command<Opt, Arg> {
         this._description = desc;
         return this;
     }
@@ -161,7 +161,7 @@ export default class Command<Opt,Arg> {
      * @returns {Command}
      * @method
      */
-    usage(usage:string):Command<Opt,Arg> {
+    usage(usage: string): Command<Opt, Arg> {
         this._usage = usage;
         return this;
     }
@@ -174,7 +174,7 @@ export default class Command<Opt,Arg> {
      * @param defaultValue
      * @returns {Command}
      */
-    option(flags:string, description?:string, defaultValue?:any):Command<Opt,Arg> {
+    option(flags: string, description?: string, defaultValue?: any): Command<Opt, Arg> {
         var option = new Option(flags, description, defaultValue);
         this.options.push(option);
         return this;
@@ -186,7 +186,7 @@ export default class Command<Opt,Arg> {
      * @param flag
      * @returns {Command}
      */
-    allowUnknownOption(flag = true):Command<Opt,Arg> {
+    allowUnknownOption(flag = true): Command<Opt, Arg> {
         this._allowUnknownOption = flag;
         return this;
     }
@@ -196,7 +196,7 @@ export default class Command<Opt,Arg> {
      * @param fn
      * @returns {Command}
      */
-    action(fn:(opts:Opt, args:Arg, rest:string[])=>any):Command<Opt,Arg> {
+    action(fn: (opts: Opt, args: Arg, rest: string[]) => any): Command<Opt, Arg> {
         this._action = fn;
         return this;
     }
@@ -206,8 +206,8 @@ export default class Command<Opt,Arg> {
      * @param name
      * @returns {Command<Opt2, Arg2>} new command instance
      */
-    subCommand<Opt2,Arg2>(name:string):Command<Opt2, Arg2> {
-        var command = new Command<Opt2,Arg2>(name);
+    subCommand<Opt2, Arg2>(name: string): Command<Opt2, Arg2> {
+        var command = new Command<Opt2, Arg2>(name);
         command.parent = this;
         this.subCommands.push(command);
         return command;
@@ -218,7 +218,7 @@ export default class Command<Opt,Arg> {
      * @param arg
      * @returns {boolean}
      */
-    is(arg:string) {
+    is(arg: string) {
         return this.name === arg;
     }
 
@@ -229,7 +229,7 @@ export default class Command<Opt,Arg> {
      * @param description
      * @returns {Command}
      */
-    help(flags:string, description:string) {
+    help(flags: string, description: string) {
         this._help = new Option(flags, description);
         return this;
     }
@@ -241,7 +241,7 @@ export default class Command<Opt,Arg> {
      * @param description
      * @returns {Command}
      */
-    version(version:string, flags:string, description:string = "output the version number"):Command<Opt,Arg> {
+    version(version: string, flags: string, description: string = "output the version number"): Command<Opt, Arg> {
         this._version = new Option(flags, description);
         this._versionStr = version;
         return this;
@@ -252,7 +252,7 @@ export default class Command<Opt,Arg> {
      * this method MUST call after parse process.
      * @returns {Promise<{}>}
      */
-    exec():Promise<{}> {
+    exec(): Promise<{}> {
         return Promise.resolve(this._action(this.parsedOpts, this.parsedArgs, this._rest));
     }
 
@@ -261,10 +261,10 @@ export default class Command<Opt,Arg> {
      * @param argv
      * @returns {Promise<{}>}
      */
-    parse(argv:string[]):Promise<{}> {
+    parse(argv: string[]): Promise<{}> {
         return Promise
             .resolve(null)
-            .then(()=> {
+            .then(() => {
                 var rest = this._parseRawArgs(argv);
                 // resolve help action
                 if (this._args.some(arg => this._help.is(arg))) {
@@ -274,7 +274,7 @@ export default class Command<Opt,Arg> {
 
                     return Promise.resolve({});
                 }
-                var subCommand:Command<any,any>;
+                var subCommand: Command<any, any>;
                 if (this.parent == null) {
                     // only for top level (why? because I can't decide which is natural syntax between `foo help bar buzz` and `foo bar help buzz`.
                     if (this._rest.some(arg => this._help.name() === arg)) {
@@ -313,7 +313,7 @@ export default class Command<Opt,Arg> {
      * @returns {*}
      * @private
      */
-    _getAncestorsAndMe():Command<any,any>[] {
+    _getAncestorsAndMe(): Command<any, any>[] {
         if (!this.parent) {
             return [this];
         } else {
@@ -326,10 +326,10 @@ export default class Command<Opt,Arg> {
      * @returns {string[]}
      * @private
      */
-    _parseRawArgs(args:string[]) {
+    _parseRawArgs(args: string[]) {
         args = args.slice(0);
-        var target:string[] = [];
-        var rest:string[] = [];
+        var target: string[] = [];
+        var rest: string[] = [];
 
         for (var i = 0; i < args.length; i++) {
             var arg = args[i];
@@ -371,7 +371,7 @@ export default class Command<Opt,Arg> {
      * @returns {boolean}
      * @private
      */
-    _matchSubCommand(rest:string[]):boolean {
+    _matchSubCommand(rest: string[]): boolean {
         if (rest == null || !rest[0]) {
             return false;
         }
@@ -384,10 +384,10 @@ export default class Command<Opt,Arg> {
      * @returns {string[]}
      * @private
      */
-    _parseOptions(args:string[]) {
+    _parseOptions(args: string[]) {
         args = args.slice(0);
-        var rest:string[] = [];
-        var processedOptions:Option[] = [];
+        var rest: string[] = [];
+        var processedOptions: Option[] = [];
         while (args.length !== 0) {
             var arg = args.shift();
             if (arg === "--") {
@@ -426,7 +426,7 @@ export default class Command<Opt,Arg> {
      * @returns {string[]}
      * @private
      */
-    _parseArgs(rest:string[]) {
+    _parseArgs(rest: string[]) {
         rest = rest.slice(0);
         this.args.forEach(argInfo => {
             rest = argInfo.parse(this.parsedArgs, rest);
@@ -439,11 +439,11 @@ export default class Command<Opt,Arg> {
      * @returns {string[]}
      * @private
      */
-    _normalize(args:string[]):string[] {
-        var result:string[] = [];
+    _normalize(args: string[]): string[] {
+        var result: string[] = [];
         for (var i = 0; i < args.length; i++) {
             var arg = args[i];
-            var lastOpt:Option;
+            var lastOpt: Option;
             if (0 < i) {
                 lastOpt = this.options.filter(opt => opt.is(args[i - 1]))[0];
             }
@@ -469,7 +469,7 @@ export default class Command<Opt,Arg> {
      * generate help text.
      * @returns {string}
      */
-    helpText():string {
+    helpText(): string {
         var result = "";
         // usage part
         result += "  Usage: ";

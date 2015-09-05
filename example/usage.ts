@@ -53,13 +53,13 @@ interface RemoteAddArgs {
 }
 
 var add = remote
-    .subCommand<RemoteAddOptions,RemoteAddArgs>("add <remoteUrls...>")
+    .subCommand<RemoteAddOptions, RemoteAddArgs>("add <remoteUrls...>")
     .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
     .allowUnknownOption()
     .action((opts, args, rest) => {
         return remote
             .exec()
-            .then(()=> {
+            .then(() => {
                 console.log("remote add action");
                 console.log(opts);
                 console.log(args);

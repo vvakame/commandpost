@@ -1,8 +1,8 @@
 import Command from "../lib/command";
 
-describe("Command", ()=> {
-    describe("#subCommand", ()=> {
-        it("create sub command", ()=> {
+describe("Command", () => {
+    describe("#subCommand", () => {
+        it("create sub command", () => {
             var cmd = new Command("test");
             var remote = cmd.subCommand("remote");
 
@@ -16,33 +16,33 @@ describe("Command", ()=> {
             assert(remote.subCommands.length === 0);
         });
     });
-    describe("#allowUnknownOption", ()=> {
-        it("not allowed unknown option default", ()=> {
+    describe("#allowUnknownOption", () => {
+        it("not allowed unknown option default", () => {
             var cmd = new Command("test");
             return cmd
                 .parse(["--unknown"])
-                .then(()=> {
+                .then(() => {
                     throw new Error("expected error is not raised");
-                }, ()=> {
+                }, () => {
                     return true;
                 });
         });
-        it("allowed unknown option if allowUnknownOption() called", ()=> {
+        it("allowed unknown option if allowUnknownOption() called", () => {
             var cmd = new Command("test");
             return cmd
                 .allowUnknownOption()
-                .action(()=> {
+                .action(() => {
                     false;
                 })
                 .parse(["--unknown"]);
         });
     });
-    describe("#parse", ()=> {
-        it("parse args with single value", ()=> {
+    describe("#parse", () => {
+        it("parse args with single value", () => {
             var cmd = new Command("test");
             cmd.option("-r, --replace");
 
-            var remote = cmd.subCommand<{config:string[];},{}>("remote");
+            var remote = cmd.subCommand<{ config: string[]; }, {}>("remote");
             remote.option("-c, --config <file>");
             remote.action((opts, rest) => {
                 assert(opts.config.length === 1);
@@ -51,11 +51,11 @@ describe("Command", ()=> {
 
             return cmd.parse(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
         });
-        it("parse args with multiple value", ()=> {
+        it("parse args with multiple value", () => {
             var cmd = new Command("test");
             cmd.option("-r, --replace");
 
-            var remote = cmd.subCommand<{config:string[];},{}>("remote");
+            var remote = cmd.subCommand<{ config: string[]; }, {}>("remote");
             remote.option("-c, --config <file>");
             remote.action((opts, rest) => {
                 assert(opts.config.length === 3);
@@ -67,8 +67,8 @@ describe("Command", ()=> {
             return cmd.parse(["-r", "remote", "-c", "hoge.json", "-c", "fuga.json", "--config=piyo.json", "foo.txt"]);
         });
     });
-    describe("#_parseRawArgs", ()=> {
-        it("parse args without sub command", ()=> {
+    describe("#_parseRawArgs", () => {
+        it("parse args without sub command", () => {
             var cmd = new Command("test");
             cmd.option("-r, --replace");
             cmd.option("-c");
@@ -80,7 +80,7 @@ describe("Command", ()=> {
 
             assert(rest.length === 0);
         });
-        it("parse args with sub command", ()=> {
+        it("parse args with sub command", () => {
             var cmd = new Command("test");
             cmd.option("-r, --replace");
 
@@ -95,7 +95,7 @@ describe("Command", ()=> {
             assert(rest.length === 4);
             assert(rest[0] === "remote");
         });
-        it("parse args with normalized", ()=> {
+        it("parse args with normalized", () => {
             var cmd = new Command("test");
             cmd.option("-a");
             cmd.option("-b");
@@ -108,7 +108,7 @@ describe("Command", ()=> {
             assert(cmd._args[1] === "-b");
             assert(cmd._args[2] === "-c");
         });
-        it("parse args with --", ()=> {
+        it("parse args with --", () => {
             var cmd = new Command("test");
             cmd.option("-r, --replace [file]");
 

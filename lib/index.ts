@@ -21,10 +21,10 @@ import Command from "./command";
  * @param cmdName
  * @returns {Command<Opt, Arg>}
  */
-export function create<Opt,Arg>(cmdName:string):Command<Opt,Arg> {
+export function create<Opt, Arg>(cmdName: string): Command<Opt, Arg> {
     "use strict";
 
-    return new Command<Opt,Arg>(cmdName);
+    return new Command<Opt, Arg>(cmdName);
 }
 
 /**
@@ -33,12 +33,12 @@ export function create<Opt,Arg>(cmdName:string):Command<Opt,Arg> {
  * @param argv pass process.argv
  * @returns {Promise<{}>}
  */
-export function exec(cmd:Command<any,any>, argv:string[]):Promise<{}> {
+export function exec(cmd: Command<any, any>, argv: string[]): Promise<{}> {
     "use strict";
 
     return Promise
         .resolve(null)
-        .then(()=> {
+        .then(() => {
             argv = argv.slice(2);
             // cmd.parse throw an exception often.
             return cmd.parse(argv);

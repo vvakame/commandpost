@@ -6,7 +6,7 @@
  * @returns {number}
  * @private
  */
-export function maxLength(strs:string[]):number {
+export function maxLength(strs: string[]): number {
     "use strict";
 
     return strs.map(str => str.length).reduce((p, c) => Math.max(p, c), 0);
@@ -20,7 +20,7 @@ export function maxLength(strs:string[]):number {
  * @returns {string}
  * @private
  */
-export function pad(str:string, length:number, pad = " "):string {
+export function pad(str: string, length: number, pad = " "): string {
     "use strict";
 
     if (length <= str.length) {
@@ -41,7 +41,7 @@ export function pad(str:string, length:number, pad = " "):string {
  * @returns {string}
  * @private
  */
-export function chainToLowerCamelCase(str:string):string {
+export function chainToLowerCamelCase(str: string): string {
     "use strict";
 
     var nextCamel = false;

@@ -5,17 +5,17 @@ import * as utils from "./utils";
 // jsdoc, see constructor.
 export default class Option {
     /** this option need parameter value. it is required. */
-    required:boolean;
+    required: boolean;
     /** this option need parameter value. it is optional. */
-    optional:boolean;
+    optional: boolean;
     /** this option is default true. if specified this option, value is become false. */
-    no:boolean;
+    no: boolean;
     /** short style. e.g. -o */
-    short:string;
+    short: string;
     /** long style. e.g. --option */
-    long:string;
+    long: string;
     /** description of this option */
-    description:string;
+    description: string;
 
     /**
      * class of option.
@@ -28,7 +28,7 @@ export default class Option {
      * @param defaultValue
      * @class
      */
-    constructor(public flags:string, description?:string, public defaultValue?:any) {
+    constructor(public flags: string, description?: string, public defaultValue?: any) {
         this.required = flags.indexOf("<") !== -1;
         this.optional = flags.indexOf("[") !== -1;
         this.no = flags.indexOf("-no-") === -1;
@@ -60,7 +60,7 @@ export default class Option {
      * @param arg
      * @returns {boolean}
      */
-    is(arg:string) {
+    is(arg: string) {
         return arg === this.short || arg === this.long;
     }
 
@@ -87,7 +87,7 @@ export default class Option {
      * @param args
      * @returns {string[]}
      */
-    parse(opts:any, args:string[]):string[] {
+    parse(opts: any, args: string[]): string[] {
         if (!this.is(args[0])) {
             throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
         }
