@@ -11,7 +11,31 @@
         "newLine": "LF",
         "noEmitOnError": true
     },
-    "exclude": [
-        "node_modules"
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./**/*.d.ts",
+        "./typings/**/*.d.ts",
+        "!./example/**/*.ts",
+        "!./node_modules/**/*",
+        "./node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "files": [
+        "./lib/argument.ts",
+        "./lib/command.ts",
+        "./lib/index.ts",
+        "./lib/option.ts",
+        "./lib/utils.ts",
+        "./test/argumentSpec.ts",
+        "./test/commandSpec.ts",
+        "./test/indexSpec.ts",
+        "./test/optionSpec.ts",
+        "./test/utilsSpec.ts",
+        "./typings/empower/empower.d.ts",
+        "./typings/mocha/mocha.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/power-assert-formatter/power-assert-formatter.d.ts",
+        "./typings/power-assert/power-assert.d.ts",
+        "./node_modules/typescript/lib/lib.es6.d.ts"
     ]
 }
