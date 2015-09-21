@@ -9,7 +9,8 @@
         "declaration": true,
         "listFiles": true,
         "newLine": "LF",
-        "noEmitOnError": true
+        "noEmitOnError": true,
+        "inlineSources": true
     },
     "filesGlob": [
         "./**/*.ts",
