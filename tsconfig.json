@@ -21,6 +21,7 @@
         "!./node_modules/**/*",
         "./node_modules/typescript/lib/lib.es6.d.ts"
     ],
+    "exclude": [],
     "files": [
         "./lib/argument.ts",
         "./lib/command.ts",
