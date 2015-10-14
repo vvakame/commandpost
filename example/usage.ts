@@ -1,11 +1,8 @@
-/// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
-/// <reference path="../typings/node/node.d.ts" />
-
 // sample.
-// tsc --module commonjs --target es5 --noImplicitAny usage.ts
+// tsc -p ./
 // node usage.js -r -c a.json b.txt --config=c.json remote -v d add e.txt -- f.txt
 
-import * as lib from "../lib";
+import * as commandpost from "commandpost";
 
 interface RootOptions {
     replace: boolean;
@@ -14,7 +11,7 @@ interface RootOptions {
 interface RootArgs {
 }
 
-var root = lib
+let root = commandpost
     .create<RootOptions, RootArgs>("usg")
     .version("100.0.0", "-v, --version")
     .description("foo bar")
@@ -35,7 +32,7 @@ interface RemoteArgs {
     remoteUrl: string;
 }
 
-var remote = root
+let remote = root
     .subCommand<RemoteOptions, RemoteArgs>("remote <remoteUrl>")
     .description("about remote repos")
     .option("-v, --verbose")
@@ -52,7 +49,7 @@ interface RemoteAddArgs {
     remoteUrls: string[];
 }
 
-var add = remote
+let add = remote
     .subCommand<RemoteAddOptions, RemoteAddArgs>("add <remoteUrls...>")
     .help("-p, --pleh", "HELP MEEEEEEEEEE!!!!")
     .allowUnknownOption()
@@ -71,7 +68,7 @@ var add = remote
             });
     });
 
-lib
+commandpost
     .exec(root, process.argv)
     .catch(err => {
         if (err instanceof Error) {

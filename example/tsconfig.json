@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "listFiles": true,
+        "newLine": "LF",
+        "noEmitOnError": true,
+        "inlineSources": true
+    },
+    "exclude": [],
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./**/*.d.ts",
+        "./typings/**/*.d.ts",
+        "!./node_modules/**/*",
+        "./node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "files": [
+        "usage.ts",
+        "typings/bundle.d.ts",
+        "typings/node/node.d.ts",
+        "node_modules/typescript/lib/lib.es6.d.ts"
+    ]
+}
