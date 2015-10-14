@@ -124,7 +124,7 @@ export default class Command<Opt, Arg> {
         var findVariadic = false;
         this.args = args.map(argStr => {
             if (findVariadic) {
-                throw new Error("parameter is not placed after variadic parameter");
+                throw new Error("parameter can not placed after variadic parameter");
             }
             var arg = new Argument(argStr);
             if (arg.required && findOptional) {
