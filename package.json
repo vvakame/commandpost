@@ -1,8 +1,8 @@
 {
   "name": "commandpost",
   "author": "vvakame",
-  "version": "0.2.5",
-  "description": "option parser",
+  "version": "1.0.0",
+  "description": "commandline option parser",
   "main": "./lib/index",
   "repository": {
     "type": "git",
