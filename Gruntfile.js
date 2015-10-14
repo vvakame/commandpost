@@ -40,13 +40,23 @@ module.exports = function (grunt) {
         typedoc: {
             main: {
                 options: {
-                    module: "<%= ts.options.module %>",
+                    module: "commonjs",
                     out: './docs',
                     name: '<%= pkg.name %>',
-                    target: "<%= ts.options.target %>"
+                    target: "es5",
+                    experimentalDecorators: ""
                 },
                 src: [
-                    '<%= opt.client.tsMain %>/**/*.ts'
+                    "./**/*.ts",
+                    "./**/*.tsx",
+                    "!./**/*.d.ts",
+                    "!./lib/cli.ts",
+                    "./typings/**/*.d.ts",
+                    "!./test/**/*.ts",
+                    "!./example/**/*.ts",
+                    "!./pages/**/*.ts",
+                    "!./node_modules/**/*",
+                    "./node_modules/typescript/lib/lib.es6.d.ts"
                 ]
             }
         },
