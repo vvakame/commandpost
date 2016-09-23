@@ -1,3 +1,5 @@
+import * as assert from "power-assert";
+
 import utils = require("../lib/utils");
 
 describe("utils", () => {

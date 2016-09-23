@@ -32,12 +32,12 @@ export default class Option {
         this.required = flags.indexOf("<") !== -1;
         this.optional = flags.indexOf("[") !== -1;
         this.no = flags.indexOf("-no-") === -1;
-        var splittedFlags = flags.split(/[ ,|]+/);
+        let splittedFlags = flags.split(/[ ,|]+/);
         if (splittedFlags.length > 1 && !/^[[<]/.test(splittedFlags[1])) {
             this.short = splittedFlags.shift();
         }
         this.long = splittedFlags.shift();
-        this.description = description || '';
+        this.description = description || "";
         if (typeof this.defaultValue === "undefined") {
             if (this.required || this.optional) {
                 this.defaultValue = "";
@@ -91,8 +91,8 @@ export default class Option {
         if (!this.is(args[0])) {
             throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
         }
-        var next = args[1];
-        var propertyName = utils.chainToLowerCamelCase(this.name());
+        let next = args[1];
+        let propertyName = utils.chainToLowerCamelCase(this.name());
         if (this.required) {
             if (next == null) {
                 throw new Error(args[0] + " is required parameter value");

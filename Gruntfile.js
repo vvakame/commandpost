@@ -1,6 +1,4 @@
 module.exports = function (grunt) {
-    require("time-grunt")(grunt);
-
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         opt: {
@@ -13,14 +11,10 @@ module.exports = function (grunt) {
             }
         },
 
-        ts: {
-            default: {
-                tsconfig: {
-                    tsconfig: "./tsconfig.json",
-                    updateFiles:false
-                }
-            }
-        },
+		exec: {
+			tsc: "tsc -p ./",
+			tsfmt: "tsfmt -r"
+		},
         tsconfig: {
             main: {
             }
@@ -60,14 +54,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        dtsm: {
-            client: {
-                options: {
-                    // optional: specify config file
-                    confog: './dtsm.json'
-                }
-            }
-        },
         clean: {
             clientScript: {
                 src: [
@@ -79,12 +65,6 @@ module.exports = function (grunt) {
                     '<%= opt.client.jsTestOut %>/*.js',
                     '<%= opt.client.jsTestOut %>/*.js.map',
                     '<%= opt.client.jsTestOut %>/*.d.ts'
-                ]
-            },
-            dtsm: {
-                src: [
-                    // dtsm installed
-                    "typings/"
                 ]
             }
         },
@@ -99,9 +79,6 @@ module.exports = function (grunt) {
                                 cwd: process.cwd() + '/' + grunt.config.get("opt.client.jsTestOut"),
                                 pattern: '**/*.js'
                             });
-                        },
-                        function () {
-                            assert = require('power-assert');
                         }
                     ]
                 },
@@ -109,20 +86,39 @@ module.exports = function (grunt) {
                     '<%= opt.client.jsTestOut %>/**/*Spec.js'
                 ]
             }
-        }
+        },
+		conventionalChangelog: {
+			options: {
+				changelogOpts: {
+					// conventional-changelog options go here
+					preset: "angular"
+			 },
+			 context: {
+					// context goes here
+			 },
+			 gitRawCommitsOpts: {
+					// git-raw-commits options go here
+			 },
+			 parserOpts: {
+					// conventional-commits-parser options go here
+			 },
+			 writerOpts: {
+					// conventional-changelog-writer options go here
+			 }
+			},
+			release: {
+				src: "CHANGELOG.md"
+			}
+		}
     });
 
-    grunt.registerTask(
-        'setup',
-        ['clean', 'dtsm']);
+	grunt.registerTask(
+		'default',
+		['clean:clientScript', 'exec:tsfmt', 'exec:tsc', 'tslint']);
 
-    grunt.registerTask(
-        'default',
-        ['tsconfig', 'ts', 'tslint']);
-
-    grunt.registerTask(
-        'test',
-        ['default', 'mochaTest']);
+	grunt.registerTask(
+		'test',
+		['default', 'mochaTest']);
 
     require('load-grunt-tasks')(grunt);
 };

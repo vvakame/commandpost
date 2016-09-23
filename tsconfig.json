@@ -1,43 +1,42 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es5",
+        "lib": [
+            "es2015"
+        ],
+        "types": [
+            "node",
+            "mocha"
+        ],
         "noImplicitAny": true,
+        "strictNullChecks": false,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "stripInternal": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": false,
         "rootDir": ".",
         "sourceMap": true,
         "declaration": true,
-        "listFiles": true,
+        "listFiles": false,
+        "traceResolution": false,
         "newLine": "LF",
         "noEmitOnError": true,
-        "inlineSources": true
+        "inlineSources": true,
+        "listEmittedFiles": false
     },
-    "filesGlob": [
-        "./**/*.ts",
-        "./**/*.tsx",
-        "!./**/*.d.ts",
-        "./typings/**/*.d.ts",
-        "!./example/**/*.ts",
-        "!./node_modules/**/*",
-        "./node_modules/typescript/lib/lib.es6.d.ts"
+    "include": [
+        "lib/**/*.ts",
+        "test/**/*.ts"
     ],
-    "exclude": [],
-    "files": [
-        "./lib/argument.ts",
-        "./lib/command.ts",
-        "./lib/index.ts",
-        "./lib/option.ts",
-        "./lib/utils.ts",
-        "./test/argumentSpec.ts",
-        "./test/commandSpec.ts",
-        "./test/indexSpec.ts",
-        "./test/optionSpec.ts",
-        "./test/utilsSpec.ts",
-        "./typings/empower/empower.d.ts",
-        "./typings/mocha/mocha.d.ts",
-        "./typings/node/node.d.ts",
-        "./typings/power-assert-formatter/power-assert-formatter.d.ts",
-        "./typings/power-assert/power-assert.d.ts",
-        "./node_modules/typescript/lib/lib.es6.d.ts"
+    "exclude": [
+        "node_modules"
     ]
 }

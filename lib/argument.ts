@@ -20,11 +20,11 @@ export default class Argument {
      */
     constructor(arg: string) {
         switch (arg.charAt(0)) {
-            case '<':
+            case "<":
                 this.required = true;
                 this.name = arg.slice(1, -1);
                 break;
-            case '[':
+            case "[":
                 this.required = false;
                 this.name = arg.slice(1, -1);
                 break;
@@ -66,7 +66,7 @@ export default class Argument {
             args = [];
             return args;
         }
-        var arg = args.shift();
+        let arg = args.shift();
         if (this.required && !arg) {
             throw new Error(this.name + " is required");
         }

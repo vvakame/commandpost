@@ -44,7 +44,7 @@ export function pad(str: string, length: number, pad = " "): string {
 export function chainToLowerCamelCase(str: string): string {
     "use strict";
 
-    var nextCamel = false;
+    let nextCamel = false;
     return str
         .split("")
         .map(char => {

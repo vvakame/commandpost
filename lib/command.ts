@@ -117,16 +117,16 @@ export default class Command<Opt, Arg> {
      * @class
      */
     constructor(name: string) {
-        var args = name.split(/\s+/);
+        let args = name.split(/\s+/);
         this.name = args.shift();
 
-        var findOptional = false;
-        var findVariadic = false;
+        let findOptional = false;
+        let findVariadic = false;
         this.args = args.map(argStr => {
             if (findVariadic) {
                 throw new Error("parameter can not placed after variadic parameter");
             }
-            var arg = new Argument(argStr);
+            let arg = new Argument(argStr);
             if (arg.required && findOptional) {
                 throw new Error("required parameter is not placed after optional parameter");
             }
@@ -140,7 +140,7 @@ export default class Command<Opt, Arg> {
         });
 
         this._action = () => {
-            process.stdout.write(this.helpText() + '\n');
+            process.stdout.write(this.helpText() + "\n");
         };
     }
 
@@ -175,7 +175,7 @@ export default class Command<Opt, Arg> {
      * @returns {Command}
      */
     option(flags: string, description?: string, defaultValue?: any): Command<Opt, Arg> {
-        var option = new Option(flags, description, defaultValue);
+        let option = new Option(flags, description, defaultValue);
         this.options.push(option);
         return this;
     }
@@ -207,7 +207,7 @@ export default class Command<Opt, Arg> {
      * @returns {Command<Opt2, Arg2>} new command instance
      */
     subCommand<Opt2, Arg2>(name: string): Command<Opt2, Arg2> {
-        var command = new Command<Opt2, Arg2>(name);
+        let command = new Command<Opt2, Arg2>(name);
         command.parent = this;
         this.subCommands.push(command);
         return command;
@@ -265,16 +265,16 @@ export default class Command<Opt, Arg> {
         return Promise
             .resolve(null)
             .then(() => {
-                var rest = this._parseRawArgs(argv);
+                let rest = this._parseRawArgs(argv);
                 // resolve help action
                 if (this._args.some(arg => this._help.is(arg))) {
                     // include help option. (help for this command
-                    process.stdout.write(this.helpText() + '\n');
+                    process.stdout.write(this.helpText() + "\n");
                     process.exit(0);
 
                     return Promise.resolve({});
                 }
-                var subCommand: Command<any, any>;
+                let subCommand: Command<any, any>;
                 if (this.parent == null) {
                     // only for top level (why? because I can't decide which is natural syntax between `foo help bar buzz` and `foo bar help buzz`.
                     if (this._rest.some(arg => this._help.name() === arg)) {
@@ -282,7 +282,7 @@ export default class Command<Opt, Arg> {
                         if (rest[0]) {
                             subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
                             if (subCommand) {
-                                process.stdout.write(subCommand.helpText() + '\n');
+                                process.stdout.write(subCommand.helpText() + "\n");
                                 process.exit(0);
 
                                 return Promise.resolve({});
@@ -293,7 +293,7 @@ export default class Command<Opt, Arg> {
                 }
                 // resolve version option
                 if (this._version && this._args.some(arg => this._version.is(arg))) {
-                    process.stdout.write((this._versionStr || "unknown") + '\n');
+                    process.stdout.write((this._versionStr || "unknown") + "\n");
                     process.exit(0);
 
                     return Promise.resolve({});
@@ -328,17 +328,17 @@ export default class Command<Opt, Arg> {
      */
     _parseRawArgs(args: string[]) {
         args = args.slice(0);
-        var target: string[] = [];
-        var rest: string[] = [];
+        let target: string[] = [];
+        let rest: string[] = [];
 
-        for (var i = 0; i < args.length; i++) {
-            var arg = args[i];
+        for (let i = 0; i < args.length; i++) {
+            let arg = args[i];
             if (arg === "--") {
                 // Honor option terminator
                 target = target.concat(args.slice(i));
                 break;
             }
-            var cmd = this.subCommands.filter(cmd => cmd.is(arg))[0];
+            let cmd = this.subCommands.filter(cmd => cmd.is(arg))[0];
             if (cmd) {
                 rest = args.slice(i);
                 break;
@@ -349,10 +349,10 @@ export default class Command<Opt, Arg> {
         this._rawArgs = target.slice(0);
         this._args = this._normalize(target);
         this._rest = this._parseOptions(this._args);
-        var cmds = this._getAncestorsAndMe();
-        var allowUnknownOption = cmds.reverse().map(cmd => cmd._allowUnknownOption).filter(allowUnknownOption => typeof allowUnknownOption !== "undefined")[0];
+        let cmds = this._getAncestorsAndMe();
+        let allowUnknownOption = cmds.reverse().map(cmd => cmd._allowUnknownOption).filter(allowUnknownOption => typeof allowUnknownOption !== "undefined")[0];
         if (this.unknownOptions.length !== 0 && !allowUnknownOption) {
-            var errMsg = "unknown option";
+            let errMsg = "unknown option";
             errMsg += this.unknownOptions.length === 1 ? " " : "s ";
             errMsg += this.unknownOptions.join(", ") + "\n";
             errMsg += this.helpText();
@@ -375,7 +375,7 @@ export default class Command<Opt, Arg> {
         if (rest == null || !rest[0]) {
             return false;
         }
-        var subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
+        let subCommand = this.subCommands.filter(cmd => cmd.is(rest[0]))[0];
         return !!subCommand;
     }
 
@@ -386,15 +386,15 @@ export default class Command<Opt, Arg> {
      */
     _parseOptions(args: string[]) {
         args = args.slice(0);
-        var rest: string[] = [];
-        var processedOptions: Option[] = [];
+        let rest: string[] = [];
+        let processedOptions: Option[] = [];
         while (args.length !== 0) {
-            var arg = args.shift();
+            let arg = args.shift();
             if (arg === "--") {
                 rest = rest.concat(args);
                 break;
             }
-            var opt = this.options.filter(opt => opt.is(arg))[0];
+            let opt = this.options.filter(opt => opt.is(arg))[0];
             if (!opt) {
                 rest.push(arg);
                 if (arg.indexOf("-") === 0 && !this._help.is(arg) && (!this._version || !this._version.is(arg))) {
@@ -440,10 +440,10 @@ export default class Command<Opt, Arg> {
      * @private
      */
     _normalize(args: string[]): string[] {
-        var result: string[] = [];
-        for (var i = 0; i < args.length; i++) {
-            var arg = args[i];
-            var lastOpt: Option;
+        let result: string[] = [];
+        for (let i = 0; i < args.length; i++) {
+            let arg = args[i];
+            let lastOpt: Option;
             if (0 < i) {
                 lastOpt = this.options.filter(opt => opt.is(args[i - 1]))[0];
             }
@@ -470,7 +470,7 @@ export default class Command<Opt, Arg> {
      * @returns {string}
      */
     helpText(): string {
-        var result = "";
+        let result = "";
         // usage part
         result += "  Usage: ";
         if (this._usage != null) {
@@ -499,9 +499,9 @@ export default class Command<Opt, Arg> {
         // options part
         if (this.options.length !== 0) {
             result += "  Options:\n\n";
-            var optionsMaxLength = utils.maxLength(this.options.map(opt => opt.flags));
+            let optionsMaxLength = utils.maxLength(this.options.map(opt => opt.flags));
             result += this.options.map(opt => {
-                var result = "    ";
+                let result = "    ";
                 result += utils.pad(opt.flags, optionsMaxLength);
                 result += "  ";
                 result += opt.description || "";
@@ -514,9 +514,9 @@ export default class Command<Opt, Arg> {
         // sub commands part
         if (this.subCommands.length !== 0) {
             result += "  Commands:\n\n";
-            var subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
+            let subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
             result += this.subCommands.map(cmd => {
-                var result = "    ";
+                let result = "    ";
                 result += utils.pad(cmd.name, subCommandsMaxLength);
                 result += "  ";
                 result += cmd._description || "";
