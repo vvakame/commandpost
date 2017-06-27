@@ -471,6 +471,9 @@ export default class Command<Opt, Arg> {
      */
     helpText(): string {
         let result = "";
+        if (this._description) {
+            result += this._description + "\n\n";
+        }
         // usage part
         result += "  Usage: ";
         if (this._usage != null) {

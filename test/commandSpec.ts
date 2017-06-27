@@ -129,4 +129,23 @@ describe("Command", () => {
             assert(cmd._rest[1] === "piyo.json");
         });
     });
+    describe("#helpText", () => {
+        it("construct humanreadable text", () => {
+            let cmd = new Command("test");
+            cmd.description("this is command description");
+            cmd.option("-r, --replace [file]");
+
+            let text = cmd.helpText().trim();
+            let expect = `
+this is command description
+
+  Usage: test [options] 
+
+  Options:
+
+    -r, --replace [file]
+                            `.trim();
+            assert(text === expect);
+        });
+    });
 });
