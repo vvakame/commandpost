@@ -1,3 +1,15 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/vvakame/commandpost/compare/v1.1.0...v1.2.0) (2017-07-24)
+
+
+### Features
+
+* **commandpost:** add strict: true option to tsconfig.json ([94272cb](https://github.com/vvakame/commandpost/commit/94272cb))
+* **commandpost:** export Option & Argument from index.ts fixes [#5](https://github.com/vvakame/commandpost/issues/5) ([884cf85](https://github.com/vvakame/commandpost/commit/884cf85))
+* **commandpost:** update dependencies ([c41bb6e](https://github.com/vvakame/commandpost/commit/c41bb6e))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/vvakame/commandpost/compare/1.0.1...1.1.0) (2017-06-28)
 
