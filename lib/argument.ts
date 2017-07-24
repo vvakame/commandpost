@@ -1,5 +1,3 @@
-"use strict";
-
 // jsdoc, see constructor.
 export default class Argument {
     /** argument name */

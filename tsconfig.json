@@ -9,12 +9,10 @@
         "types": [
             "node",
             "mocha"
-        ],
-        "noImplicitAny": true,
-        "strictNullChecks": false,
+		],
+		"strict": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
-        "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "experimentalDecorators": true,
@@ -38,5 +36,5 @@
     ],
     "exclude": [
         "node_modules"
-    ]
+	]
 }

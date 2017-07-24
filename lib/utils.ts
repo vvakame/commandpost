@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * calc max length of strs.
  * @param strs
@@ -7,8 +5,6 @@
  * @private
  */
 export function maxLength(strs: string[]): number {
-    "use strict";
-
     return strs.map(str => str.length).reduce((p, c) => Math.max(p, c), 0);
 }
 
@@ -21,8 +17,6 @@ export function maxLength(strs: string[]): number {
  * @private
  */
 export function pad(str: string, length: number, pad = " "): string {
-    "use strict";
-
     if (length <= str.length) {
         return str;
     }
@@ -42,8 +36,6 @@ export function pad(str: string, length: number, pad = " "): string {
  * @private
  */
 export function chainToLowerCamelCase(str: string): string {
-    "use strict";
-
     let nextCamel = false;
     return str
         .split("")

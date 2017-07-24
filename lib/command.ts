@@ -1,5 +1,3 @@
-"use strict";
-
 import Option from "./option";
 import Argument from "./argument";
 
@@ -118,7 +116,7 @@ export default class Command<Opt, Arg> {
      */
     constructor(name: string) {
         let args = name.split(/\s+/);
-        this.name = args.shift();
+        this.name = args.shift()!;
 
         let findOptional = false;
         let findVariadic = false;
@@ -389,7 +387,7 @@ export default class Command<Opt, Arg> {
         let rest: string[] = [];
         let processedOptions: Option[] = [];
         while (args.length !== 0) {
-            let arg = args.shift();
+            let arg = args.shift()!;
             if (arg === "--") {
                 rest = rest.concat(args);
                 break;
@@ -443,7 +441,7 @@ export default class Command<Opt, Arg> {
         let result: string[] = [];
         for (let i = 0; i < args.length; i++) {
             let arg = args[i];
-            let lastOpt: Option;
+            let lastOpt: Option | undefined;
             if (0 < i) {
                 lastOpt = this.options.filter(opt => opt.is(args[i - 1]))[0];
             }

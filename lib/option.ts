@@ -1,5 +1,3 @@
-"use strict";
-
 import * as utils from "./utils";
 
 // jsdoc, see constructor.
@@ -34,9 +32,9 @@ export default class Option {
         this.no = flags.indexOf("-no-") === -1;
         let splittedFlags = flags.split(/[ ,|]+/);
         if (splittedFlags.length > 1 && !/^[[<]/.test(splittedFlags[1])) {
-            this.short = splittedFlags.shift();
+            this.short = splittedFlags.shift()!;
         }
-        this.long = splittedFlags.shift();
+        this.long = splittedFlags.shift()!;
         this.description = description || "";
         if (typeof this.defaultValue === "undefined") {
             if (this.required || this.optional) {

@@ -1,5 +1,3 @@
-"use strict";
-
 try {
     // optional
     require("source-map-support").install();
@@ -24,8 +22,6 @@ export { Command, Option, Argument };
  * @returns {Command<Opt, Arg>}
  */
 export function create<Opt, Arg>(cmdName: string): Command<Opt, Arg> {
-    "use strict";
-
     return new Command<Opt, Arg>(cmdName);
 }
 
@@ -36,8 +32,6 @@ export function create<Opt, Arg>(cmdName: string): Command<Opt, Arg> {
  * @returns {Promise<{}>}
  */
 export function exec(cmd: Command<any, any>, argv: string[]): Promise<{}> {
-    "use strict";
-
     return Promise
         .resolve(null)
         .then(() => {
