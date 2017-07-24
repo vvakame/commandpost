@@ -34,7 +34,7 @@
     "power-assert": "^1.4.4",
     "source-map-support": "^0.4.15",
     "tslint": "^5.4.3",
-    "typescript": "^2.3.4",
+    "typescript": "^2.4.2",
     "typescript-formatter": "^5.2.0"
   }
 }
