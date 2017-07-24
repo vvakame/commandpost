@@ -13,6 +13,10 @@ try {
 }
 
 import Command from "./command";
+import Option from "./option";
+import Argument from "./argument";
+
+export { Command, Option, Argument };
 
 /**
  * Create new top level command.
