@@ -406,14 +406,15 @@ export default class Command<Opt, Arg> {
         this.options
             .filter(opt => processedOptions.indexOf(opt) === -1)
             .forEach(opt => {
+                let optName = utils.kebabToLowerCamelCase(opt.name());
                 if (opt.required || opt.optional) {
                     // string[]
-                    (<any>this.parsedOpts)[opt.name()] = (<any>this.parsedOpts)[opt.name()] || [];
+                    (<any>this.parsedOpts)[optName] = (<any>this.parsedOpts)[optName] || [];
                     if (opt.defaultValue) {
-                        (<any>this.parsedOpts)[opt.name()].push(opt.defaultValue);
+                        (<any>this.parsedOpts)[optName].push(opt.defaultValue);
                     }
                 } else {
-                    (<any>this.parsedOpts)[opt.name()] = opt.defaultValue;
+                    (<any>this.parsedOpts)[optName] = opt.defaultValue;
                 }
             });
         return rest;

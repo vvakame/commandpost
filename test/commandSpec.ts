@@ -129,6 +129,19 @@ describe("Command", () => {
             assert(cmd._rest[1] === "piyo.json");
         });
     });
+    describe("#_parseOptions", () => {
+        it("parse opts", () => {
+            let cmd = new Command("test");
+            cmd.option("-a, --alpha-value", "", false);
+            cmd.option("-b, --beta-value", "", false);
+
+            let rest = cmd._parseOptions(["-a"]);
+
+            assert((cmd.parsedOpts as any)["alphaValue"] === true);
+            assert((cmd.parsedOpts as any)["betaValue"] === false);
+            assert(rest.length === 0);
+        });
+    });
     describe("#helpText", () => {
         it("construct humanreadable text", () => {
             let cmd = new Command("test");
