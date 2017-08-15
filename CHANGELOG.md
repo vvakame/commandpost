@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/vvakame/commandpost/compare/v1.2.0...v1.2.1) (2017-08-15)
+
+
+### Bug Fixes
+
+* **commandpost:** fix naming of long name option with default value ([c29986c](https://github.com/vvakame/commandpost/commit/c29986c))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/vvakame/commandpost/compare/v1.1.0...v1.2.0) (2017-07-24)
 
