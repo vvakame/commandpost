@@ -90,7 +90,7 @@ export default class Option {
             throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
         }
         let next = args[1];
-        let propertyName = utils.chainToLowerCamelCase(this.name());
+        let propertyName = utils.kebabToLowerCamelCase(this.name());
         if (this.required) {
             if (next == null) {
                 throw new Error(args[0] + " is required parameter value");

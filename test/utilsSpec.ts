@@ -14,9 +14,9 @@ describe("utils", () => {
             assert(utils.pad("foobar", 10, "+") === "foobar++++");
         });
     });
-    describe("chainToLowerCamelCase", () => {
-        it("convert chain case to lower camel case", () => {
-            assert(utils.chainToLowerCamelCase("foo-bar") === "fooBar");
+    describe("kebabToLowerCamelCase", () => {
+        it("convert kebab case to lower camel case", () => {
+            assert(utils.kebabToLowerCamelCase("foo-bar") === "fooBar");
         });
     });
 });

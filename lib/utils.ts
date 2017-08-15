@@ -35,7 +35,7 @@ export function pad(str: string, length: number, pad = " "): string {
  * @returns {string}
  * @private
  */
-export function chainToLowerCamelCase(str: string): string {
+export function kebabToLowerCamelCase(str: string): string {
     let nextCamel = false;
     return str
         .split("")
