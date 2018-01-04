@@ -30,11 +30,11 @@
     "grunt-conventional-changelog": "^6.1.0",
     "intelli-espower-loader": "^1.0.1",
     "load-grunt-tasks": "^3.5.2",
-    "mocha": "^3.4.2",
+    "mocha": "^4.1.0",
     "power-assert": "^1.4.4",
     "source-map-support": "^0.4.15",
     "tslint": "^5.4.3",
-    "typescript": "^2.4.2",
-    "typescript-formatter": "^5.2.0"
+    "typescript": "^2.6.2",
+    "typescript-formatter": "^7.0.1"
   }
 }
