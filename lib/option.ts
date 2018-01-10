@@ -1,3 +1,4 @@
+import { CommandpostError, ErrorReason } from "./error";
 import * as utils from "./utils";
 
 // jsdoc, see constructor.
@@ -87,13 +88,29 @@ export default class Option {
      */
     parse(opts: any, args: string[]): string[] {
         if (!this.is(args[0])) {
-            throw new Error(args[0] + " is not match " + this.short + " or " + this.long);
+            throw new CommandpostError({
+                message: `${args[0]} is not match ${this.short} or ${this.long}`,
+                reason: ErrorReason.OptionNameMismatch,
+                params: {
+                    option: this,
+                    opts,
+                    args,
+                },
+            });
         }
         let next = args[1];
         let propertyName = utils.kebabToLowerCamelCase(this.name());
         if (this.required) {
             if (next == null) {
-                throw new Error(args[0] + " is required parameter value");
+                throw new CommandpostError({
+                    message: `${args[0]} is required parameter value`,
+                    reason: ErrorReason.OptionValueRequired,
+                    params: {
+                        option: this,
+                        opts,
+                        args,
+                    },
+                });
             }
             opts[propertyName] = opts[propertyName] || [];
             opts[propertyName].push(next);

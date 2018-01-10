@@ -1,3 +1,5 @@
+import { CommandpostError, ErrorReason } from "./error";
+
 // jsdoc, see constructor.
 export default class Argument {
     /** argument name */
@@ -27,7 +29,14 @@ export default class Argument {
                 this.name = arg.slice(1, -1);
                 break;
             default:
-                throw new Error("unsupported format: " + arg);
+                throw new CommandpostError({
+                    message: `unsupported format: ${arg}`,
+                    reason: ErrorReason.UnsupportedFormatArgument,
+                    params: {
+                        origin: this,
+                        arg,
+                    },
+                });
         }
         if (/\.\.\.$/.test(this.name)) {
             this.name = this.name.slice(0, -3);
@@ -57,7 +66,15 @@ export default class Argument {
      */
     parse(opts: any, args: string[]): string[] {
         if (this.required && this.variadic && args.length === 0) {
-            throw new Error(this.name + " is required more than 1 argument");
+            throw new CommandpostError({
+                message: `${this.name} is required more than 1 argument`,
+                reason: ErrorReason.ArgumentsRequired,
+                params: {
+                    origin: this,
+                    opts,
+                    args,
+                },
+            });
         }
         if (this.variadic) {
             opts[this.name] = args;
@@ -66,7 +83,15 @@ export default class Argument {
         }
         let arg = args.shift();
         if (this.required && !arg) {
-            throw new Error(this.name + " is required");
+            throw new CommandpostError({
+                message: `${this.name} is required`,
+                reason: ErrorReason.ArgumentRequired,
+                params: {
+                    origin: this,
+                    opts,
+                    args,
+                },
+            });
         }
         opts[this.name] = arg;
         return args;
