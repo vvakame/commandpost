@@ -7,6 +7,7 @@ import Option from "./option";
 export interface ErrorParameters {
     message?: string;
     reason: ErrorReason;
+    parts: string[];
     params?:
     { origin: Argument; arg: string; } |
     { origin: Argument; opts: any; args: string[]; } |

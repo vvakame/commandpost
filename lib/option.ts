@@ -91,6 +91,7 @@ export default class Option {
             throw new CommandpostError({
                 message: `${args[0]} is not match ${this.short} or ${this.long}`,
                 reason: ErrorReason.OptionNameMismatch,
+                parts: [args[0]],
                 params: {
                     option: this,
                     opts,
@@ -105,6 +106,7 @@ export default class Option {
                 throw new CommandpostError({
                     message: `${args[0]} is required parameter value`,
                     reason: ErrorReason.OptionValueRequired,
+                    parts: [args[0]],
                     params: {
                         option: this,
                         opts,
