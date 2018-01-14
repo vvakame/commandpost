@@ -13,9 +13,9 @@ try {
 import Command from "./command";
 import Option from "./option";
 import Argument from "./argument";
-import { CommandpostError, ErrorReason } from "./error";
+export { CommandpostError, ErrorReason } from "./error";
 
-export { Command, Option, Argument, CommandpostError, ErrorReason };
+export { Command, Option, Argument };
 
 /**
  * Create new top level command.
