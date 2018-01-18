@@ -15,7 +15,7 @@ export interface ErrorParameters {
     { option: Option; opts: any; args: string[]; };
 }
 
-export const enum ErrorReason {
+export enum ErrorReason {
     UnsupportedFormatArgument = "unsupported format",
     ArgumentsRequired = "1 or more arguments required",
     ArgumentRequired = "argument required",

@@ -17,7 +17,7 @@
         "noUnusedParameters": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "stripInternal": false,
+        "stripInternal": true,
         "skipDefaultLibCheck": true,
         "skipLibCheck": false,
         "rootDir": ".",
@@ -29,7 +29,7 @@
         "noEmitOnError": true,
         "inlineSources": true,
         "listEmittedFiles": false,
-        "preserveConstEnums": true,
+        "preserveConstEnums": false,
     },
     "include": [
         "lib/**/*.ts",
