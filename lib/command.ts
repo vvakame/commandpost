@@ -1,5 +1,6 @@
 import Option from "./option";
 import Argument from "./argument";
+import { CommandpostError, ErrorReason } from "./error";
 
 import * as utils from "./utils";
 
@@ -122,11 +123,19 @@ export default class Command<Opt, Arg> {
         let findVariadic = false;
         this.args = args.map(argStr => {
             if (findVariadic) {
-                throw new Error("parameter can not placed after variadic parameter");
+                throw new CommandpostError({
+                    parts: [argStr],
+                    message: "parameter can not placed after variadic parameter",
+                    reason: ErrorReason.ParameterCantPlacedAfterVariadic,
+                });
             }
             let arg = new Argument(argStr);
             if (arg.required && findOptional) {
-                throw new Error("required parameter is not placed after optional parameter");
+                throw new CommandpostError({
+                    parts: [argStr],
+                    message: "parameter can not placed after variadic parameter",
+                    reason: ErrorReason.ParameterCannPlacedAfterOptional,
+                });
             }
             if (!arg.required) {
                 findOptional = true;
@@ -354,7 +363,15 @@ export default class Command<Opt, Arg> {
             errMsg += this.unknownOptions.length === 1 ? " " : "s ";
             errMsg += this.unknownOptions.join(", ") + "\n";
             errMsg += this.helpText();
-            throw new Error(errMsg);
+            throw new CommandpostError({
+                message: errMsg,
+                reason: ErrorReason.UnknownOption,
+                parts: this.unknownOptions,
+                params: {
+                    origin: this,
+                    args,
+                },
+            });
         }
         if (this._matchSubCommand(rest)) {
             return rest;

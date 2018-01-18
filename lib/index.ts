@@ -13,6 +13,7 @@ try {
 import Command from "./command";
 import Option from "./option";
 import Argument from "./argument";
+export { CommandpostError, ErrorReason } from "./error";
 
 export { Command, Option, Argument };
 

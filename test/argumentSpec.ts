@@ -1,6 +1,7 @@
 import * as assert from "power-assert";
 
 import Argument from "../lib/argument";
+import { CommandpostError } from "../lib/error";
 
 describe("Argument", () => {
     describe("constructor", () => {
@@ -51,6 +52,10 @@ describe("Argument", () => {
                 arg.parse(parsed, []);
             } catch (e) {
                 caught = true;
+                assert(e instanceof Error);
+                assert(e instanceof CommandpostError);
+                let err = e as CommandpostError;
+                assert(err.params.message === "foobar is required");
             }
 
             assert(caught);

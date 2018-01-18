@@ -10,7 +10,7 @@
             "node",
             "mocha"
 		],
-		"strict": true,
+        "strict": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
@@ -28,7 +28,8 @@
         "newLine": "LF",
         "noEmitOnError": true,
         "inlineSources": true,
-        "listEmittedFiles": false
+        "listEmittedFiles": false,
+        "preserveConstEnums": false,
     },
     "include": [
         "lib/**/*.ts",
