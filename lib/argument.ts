@@ -31,6 +31,7 @@ export default class Argument {
             default:
                 throw new CommandpostError({
                     message: `unsupported format: ${arg}`,
+                    parts: [arg],
                     reason: ErrorReason.UnsupportedFormatArgument,
                     params: {
                         origin: this,
@@ -67,7 +68,8 @@ export default class Argument {
     parse(opts: any, args: string[]): string[] {
         if (this.required && this.variadic && args.length === 0) {
             throw new CommandpostError({
-                message: `${this.name} is required more than 1 argument`,
+                message: `${this.name} requires more than one argument`,
+                parts: [this.name],
                 reason: ErrorReason.ArgumentsRequired,
                 params: {
                     origin: this,
@@ -86,6 +88,7 @@ export default class Argument {
             throw new CommandpostError({
                 message: `${this.name} is required`,
                 reason: ErrorReason.ArgumentRequired,
+                parts: [this.name],
                 params: {
                     origin: this,
                     opts,
