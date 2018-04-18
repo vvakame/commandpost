@@ -4,15 +4,16 @@
   "description": "",
   "main": "usage.js",
   "scripts": {
-    "build": "./node_modules/.bin/tsc -p ./",
+    "build": "tsc",
     "test": "node usage.js -r -c a.json b.txt --config=c.json remote -v d add e.txt -- f.txt"
   },
   "author": "vvakame",
   "license": "MIT",
   "dependencies": {
-    "commandpost": "0.2.5"
+    "commandpost": "^1.3.0"
   },
   "devDependencies": {
-    "typescript": "1.6.2"
+    "@types/node": "^9.6.5",
+    "typescript": "^2.8.1"
   }
 }
