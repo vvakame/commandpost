@@ -1,4 +1,4 @@
-import * as assert from "power-assert";
+import assert = require("power-assert");
 
 import Option from "../lib/option";
 

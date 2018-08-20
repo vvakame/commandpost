@@ -9,11 +9,11 @@ export default class Command<Opt, Arg> {
     /**
      * @private
      */
-    _description: string;
+    _description?: string;
     /**
      * @private
      */
-    _usage: string;
+    _usage?: string;
     /**
      * @private
      */
@@ -21,11 +21,11 @@ export default class Command<Opt, Arg> {
     /**
      * @private
      */
-    _version: Option;
+    _version?: Option;
     /**
      * @private
      */
-    _versionStr: string;
+    _versionStr?: string;
     /**
      * @private
      */
@@ -35,12 +35,12 @@ export default class Command<Opt, Arg> {
      * e.g. -abc --foo bar
      * @private
      */
-    _rawArgs: string[];
+    _rawArgs?: string[];
     /**
      * e.g. -a -b -c --foo bar
      * @private
      */
-    _args: string[];
+    _args?: string[];
     /**
      * e.g. bar
      * @private
@@ -50,12 +50,12 @@ export default class Command<Opt, Arg> {
     /**
      * @private
      */
-    _allowUnknownOption: boolean;
+    _allowUnknownOption?: boolean;
 
     /**
      * parent command.
      */
-    parent: Command<any, any>;
+    parent?: Command<any, any>;
     /**
      * name of this command.
      */
@@ -274,7 +274,7 @@ export default class Command<Opt, Arg> {
             .then(() => {
                 let rest = this._parseRawArgs(argv);
                 // resolve help action
-                if (this._args.some(arg => this._help.is(arg))) {
+                if (this._args!.some(arg => this._help.is(arg))) {
                     // include help option. (help for this command
                     process.stdout.write(this.helpText() + "\n");
                     process.exit(0);
@@ -299,7 +299,7 @@ export default class Command<Opt, Arg> {
                     }
                 }
                 // resolve version option
-                if (this._version && this._args.some(arg => this._version.is(arg))) {
+                if (this._version && this._args!.some(arg => this._version!.is(arg))) {
                     process.stdout.write((this._versionStr || "unknown") + "\n");
                     process.exit(0);
 

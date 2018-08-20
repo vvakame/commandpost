@@ -10,7 +10,7 @@ export default class Option {
     /** this option is default true. if specified this option, value is become false. */
     no: boolean;
     /** short style. e.g. -o */
-    short: string;
+    short?: string;
     /** long style. e.g. --option */
     long: string;
     /** description of this option */

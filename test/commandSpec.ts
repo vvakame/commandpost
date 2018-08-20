@@ -1,4 +1,4 @@
-import * as assert from "power-assert";
+import assert = require("power-assert");
 
 import Command from "../lib/command";
 
@@ -77,8 +77,8 @@ describe("Command", () => {
 
             let rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
 
-            assert(cmd._args.length === 5);
-            assert(cmd._args[0] === "-r");
+            assert(cmd._args!.length === 5);
+            assert(cmd._args![0] === "-r");
 
             assert(rest.length === 0);
         });
@@ -91,8 +91,8 @@ describe("Command", () => {
 
             let rest = cmd._parseRawArgs(["-r", "remote", "-c", "hoge.json", "piyo.txt"]);
 
-            assert(cmd._args.length === 1);
-            assert(cmd._args[0] === "-r");
+            assert(cmd._args!.length === 1);
+            assert(cmd._args![0] === "-r");
 
             assert(rest.length === 4);
             assert(rest[0] === "remote");
@@ -105,10 +105,10 @@ describe("Command", () => {
 
             cmd._parseRawArgs(["-abc"]);
 
-            assert(cmd._args.length === 3);
-            assert(cmd._args[0] === "-a");
-            assert(cmd._args[1] === "-b");
-            assert(cmd._args[2] === "-c");
+            assert(cmd._args!.length === 3);
+            assert(cmd._args![0] === "-a");
+            assert(cmd._args![1] === "-b");
+            assert(cmd._args![2] === "-c");
         });
         it("parse args with --", () => {
             let cmd = new Command("test");
@@ -116,13 +116,13 @@ describe("Command", () => {
 
             cmd._parseRawArgs(["-r", "hoge.json", "fuga.json", "-r", "--", "piyo.json"]);
 
-            assert(cmd._args.length === 6);
-            assert(cmd._args[0] === "-r");
-            assert(cmd._args[1] === "hoge.json");
-            assert(cmd._args[2] === "fuga.json");
-            assert(cmd._args[3] === "-r");
-            assert(cmd._args[4] === "--");
-            assert(cmd._args[5] === "piyo.json");
+            assert(cmd._args!.length === 6);
+            assert(cmd._args![0] === "-r");
+            assert(cmd._args![1] === "hoge.json");
+            assert(cmd._args![2] === "fuga.json");
+            assert(cmd._args![3] === "-r");
+            assert(cmd._args![4] === "--");
+            assert(cmd._args![5] === "piyo.json");
 
             assert(cmd._rest.length === 2);
             assert(cmd._rest[0] === "fuga.json");
