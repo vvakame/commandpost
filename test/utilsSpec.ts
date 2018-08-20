@@ -1,4 +1,4 @@
-import * as assert from "power-assert";
+import assert = require("assert");
 
 import utils = require("../lib/utils");
 
