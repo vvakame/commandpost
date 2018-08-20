@@ -1,4 +1,4 @@
-import assert = require("power-assert");
+import assert = require("assert");
 
 import Argument from "../lib/argument";
 import { CommandpostError } from "../lib/error";

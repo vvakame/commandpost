@@ -1,15 +1,3 @@
-try {
-    // optional
-    require("source-map-support").install();
-} catch (e) {
-}
-try {
-    if (typeof Promise === "undefined") {
-        require("es6-promise").polyfill();
-    }
-} catch (e) {
-}
-
 import Command from "./command";
 import Option from "./option";
 import Argument from "./argument";
