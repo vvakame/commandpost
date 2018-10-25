@@ -1,11 +1,11 @@
 # commandpost [![Circle CI](https://circleci.com/gh/vvakame/commandpost.png?style=badge)](https://circleci.com/gh/vvakame/commandpost)
 
-commandpost is a command-line option parser.
-This library inspired by [commander](https://www.npmjs.com/package/commander).
+commandpost is a command-line options parser.
+This library is inspired by [commander](https://www.npmjs.com/package/commander).
 
-commander is very user friendly, but not [TypeScript](https://www.npmjs.com/package/typescript) friendly.
-commandpost is improve it.
-Of course, commandpost can also be used from ordinary JavaScript program. :+1:
+commander is very user-friendly, but not [TypeScript](https://www.npmjs.com/package/typescript)-friendly.
+commandpost aims to improve this.
+Of course, commandpost can also be used from an ordinary JavaScript program. :+1:
 
 ## Installation
 
@@ -13,9 +13,9 @@ Of course, commandpost can also be used from ordinary JavaScript program. :+1:
 $ npm install --save commandpost
 ```
 
-## How to use
+## How to Use
 
-### Basic usage
+### Basic Usage
 
 ```
 $ cat cli.ts
@@ -52,44 +52,42 @@ $ node cli.js -s "soy sause" "fillet steak"
 Your dinner is fillet steak with soy sause!
 ```
 
-### Command
+### Commands
 
-top level command is created by `commandpost.create` function.
+A top-level command is created by the `commandpost.create` function.
 
-commandpost can have a sub command.
-sub command is created by `topLevelCommand.subCommand` method.
-like [this](https://github.com/vvakame/commandpost/blob/master/example/usage.ts#L36).
+commandpost also supports sub-commands.
+A sub-command is created by using the `topLevelCommand.subCommand` method.
+Refer to [this](https://github.com/vvakame/commandpost/blob/master/example/usage.ts#L36) example for a demonstration.
 
-commandpost can configure several items.
-e.g. version information, app description, CLI usage and help message.
-I recommend that you should setup `.version` and `.description`.
-Usually, automatic generated help message satisfy you.
+commandpost can automatically generate help and command usage messages based on your configuration. For best results, it is recommended that you should set `.version` and `.description` for your top-level command.
 
-### Option
+
+### Options
 
 ```
-// shorthand style & formal style option with required parameter. option value is convert to string[].
+// shorthand & formal option with a required parameter. value is converted to string[].
 cmd.option("-c, --config <configFile>", "Read setting from specified config file path");
 
-// option with optional parameter. option value is convert to string[].
+// option with optional parameter. value is converted to string[].
 cmd.option("-c, --config [configFile]", "Read setting from specified config file path");
 
-// option without parameter. option value is convert to boolean. default false.
+// option without parameter (flag). option value is converted to boolean and defaults to `false`.
 cmd.option("--suppress-warning", "Suppress warning");
 
-// option with `--no-` prefix. option value is convert to boolean. default true.
+// option with `--no-` prefix. option value is converted to boolean and defaults to true.
 cmd.option("--no-type-checking", "Type checking disabled");
 ```
 
-If you want to handling unknown options, You can use `.allowUnknownOption` method.
+If you want to handle unknown options, you can use the `.allowUnknownOption` method.
 
-### Argument
+### Arguments
 
 ```
 // required argument
 commandpost.create<{}, { food: string; }>("dinner <food>");
 
-// optonal argument
+// optional argument
 commandpost.create<{}, { food: string; }>("dinner [food]");
 
 // variadic argument
@@ -106,5 +104,5 @@ commandpost.create<{}, { foods: string[]; }>("dinner <food...>");
 
 ## Contributing
 
-This package's author vvakame is not native english speaker. My first language is Japanese.
-If you find incorrect english, please send me a pull request.
+This package's author, vvakame, is not a native English speaker. My first language is Japanese.
+If you find incorrect English, please send me a pull request.
