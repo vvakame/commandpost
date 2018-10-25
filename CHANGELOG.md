@@ -1,6 +1,7 @@
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/vvakame/commandpost/compare/v1.3.0...v1.4.0) (2018-10-25)
 
+README was brushed up! thanks @dkushner! ([263a141](https://github.com/vvakame/commandpost/commit/263a141))
 
 ### Features
 
