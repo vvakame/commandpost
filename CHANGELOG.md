@@ -1,3 +1,15 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/vvakame/commandpost/compare/v1.3.0...v1.4.0) (2018-10-25)
+
+
+### Features
+
+* **commandpost:** don't require source-map-support and es6-promise ([034286d](https://github.com/vvakame/commandpost/commit/034286d))
+* **commandpost:** update dependencies ([d634217](https://github.com/vvakame/commandpost/commit/d634217))
+* **example:** update examples ([ab7b815](https://github.com/vvakame/commandpost/commit/ab7b815))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/vvakame/commandpost/compare/v1.2.1...v1.3.0) (2018-01-18)
 
