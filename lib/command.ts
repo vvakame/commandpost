@@ -121,7 +121,6 @@ export default class Command<Opt, Arg> {
 
         let findOptional = false;
         let findVariadic = false;
-        let parent = this;
         this.args = args.map(argStr => {
             if (findVariadic) {
                 throw new CommandpostError({
@@ -130,7 +129,7 @@ export default class Command<Opt, Arg> {
                     reason: ErrorReason.ParameterCantPlacedAfterVariadic,
                 });
             }
-            let arg = new Argument(argStr, parent);
+            let arg = new Argument(argStr, this);
             if (arg.required && findOptional) {
                 throw new CommandpostError({
                     parts: [argStr],
