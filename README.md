@@ -62,6 +62,10 @@ Refer to [this](https://github.com/vvakame/commandpost/blob/master/example/usage
 
 commandpost can automatically generate help and command usage messages based on your configuration. For best results, it is recommended that you should set `.version` and `.description` for your top-level command.
 
+### Command alias
+
+You may specify a shorthand alias for a command command using `.alias`.
+
 
 ### Options
 
