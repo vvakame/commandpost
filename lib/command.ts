@@ -17,7 +17,7 @@ export default class Command<Opt, Arg> {
     /**
      * @private
      */
-    _help = new Option("-h, --help", "display help");
+    _help = new Option("-h, --help", "display help", this);
     /**
      * @private
      */
@@ -121,6 +121,7 @@ export default class Command<Opt, Arg> {
 
         let findOptional = false;
         let findVariadic = false;
+        let parent = this;
         this.args = args.map(argStr => {
             if (findVariadic) {
                 throw new CommandpostError({
@@ -129,7 +130,7 @@ export default class Command<Opt, Arg> {
                     reason: ErrorReason.ParameterCantPlacedAfterVariadic,
                 });
             }
-            let arg = new Argument(argStr);
+            let arg = new Argument(argStr, parent);
             if (arg.required && findOptional) {
                 throw new CommandpostError({
                     parts: [argStr],
@@ -182,7 +183,7 @@ export default class Command<Opt, Arg> {
      * @returns {Command}
      */
     option(flags: string, description?: string, defaultValue?: any): Command<Opt, Arg> {
-        let option = new Option(flags, description, defaultValue);
+        let option = new Option(flags, description, defaultValue, this);
         this.options.push(option);
         return this;
     }
@@ -237,7 +238,7 @@ export default class Command<Opt, Arg> {
      * @returns {Command}
      */
     help(flags: string, description: string) {
-        this._help = new Option(flags, description);
+        this._help = new Option(flags, description, null, this);
         return this;
     }
 
@@ -249,7 +250,7 @@ export default class Command<Opt, Arg> {
      * @returns {Command}
      */
     version(version: string, flags: string, description: string = "output the version number"): Command<Opt, Arg> {
-        this._version = new Option(flags, description);
+        this._version = new Option(flags, description, null, this);
         this._versionStr = version;
         return this;
     }

@@ -1,7 +1,10 @@
 import { CommandpostError, ErrorReason } from "./error";
+import Command from "./command";
 
 // jsdoc, see constructor.
 export default class Argument {
+    /** command relationship */
+    command?: Command<any, any>;
     /** argument name */
     name: string;
     /** this argument is required */
@@ -18,7 +21,8 @@ export default class Argument {
      * @param arg pass '<foo>'(required) or '[foo]'(optional) or '<foo...>'(required & variadic) or '[foo...]'(optional & variadic)
      * @class
      */
-    constructor(arg: string) {
+    constructor(arg: string, command?: Command<any, any>) {
+        this.command = command;
         switch (arg.charAt(0)) {
             case "<":
                 this.required = true;

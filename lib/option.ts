@@ -1,8 +1,11 @@
 import { CommandpostError, ErrorReason } from "./error";
 import * as utils from "./utils";
+import { Command } from "./index";
 
 // jsdoc, see constructor.
 export default class Option {
+    /** command relationship */
+    command?: Command<any, any>;
     /** this option need parameter value. it is required. */
     required: boolean;
     /** this option need parameter value. it is optional. */
@@ -27,9 +30,10 @@ export default class Option {
      * @param defaultValue
      * @class
      */
-    constructor(public flags: string, description?: string, public defaultValue?: any) {
+    constructor(public flags: string, description?: string, public defaultValue?: any, command?: Command<any, any>) {
         this.required = flags.indexOf("<") !== -1;
         this.optional = flags.indexOf("[") !== -1;
+        this.command = command;
         this.no = flags.indexOf("-no-") === -1;
         let splittedFlags = flags.split(/[ ,|]+/);
         if (splittedFlags.length > 1 && !/^[[<]/.test(splittedFlags[1])) {
