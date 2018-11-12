@@ -42,6 +42,11 @@ export default class Command<Opt, Arg> {
      */
     _args?: string[];
     /**
+     * Command alias
+     * @private
+     */
+    _alias?: string;
+    /**
      * e.g. bar
      * @private
      */
@@ -121,7 +126,6 @@ export default class Command<Opt, Arg> {
 
         let findOptional = false;
         let findVariadic = false;
-        let parent = this;
         this.args = args.map(argStr => {
             if (findVariadic) {
                 throw new CommandpostError({
@@ -130,7 +134,7 @@ export default class Command<Opt, Arg> {
                     reason: ErrorReason.ParameterCantPlacedAfterVariadic,
                 });
             }
-            let arg = new Argument(argStr, parent);
+            let arg = new Argument(argStr, this);
             if (arg.required && findOptional) {
                 throw new CommandpostError({
                     parts: [argStr],
@@ -150,6 +154,17 @@ export default class Command<Opt, Arg> {
         this._action = () => {
             process.stdout.write(this.helpText() + "\n");
         };
+    }
+
+    /**
+     * set command alias.
+     * @param alias
+     * @returns {Command}
+     * @method
+     */
+    alias(alias: string): Command<Opt, Arg> {
+        this._alias = alias;
+        return this;
     }
 
     /**
@@ -227,7 +242,7 @@ export default class Command<Opt, Arg> {
      * @returns {boolean}
      */
     is(arg: string) {
-        return this.name === arg;
+        return this.name === arg || this._alias === arg;
     }
 
     /**
@@ -514,6 +529,8 @@ export default class Command<Opt, Arg> {
                 }).join(" ");
             }
         }
+
+        result = result.trimRight();
         result += "\n\n";
 
         // options part
@@ -525,6 +542,7 @@ export default class Command<Opt, Arg> {
                 result += utils.pad(opt.flags, optionsMaxLength);
                 result += "  ";
                 result += opt.description || "";
+                result = result.trimRight();
                 result += "\n";
                 return result;
             }).join("");
@@ -534,10 +552,15 @@ export default class Command<Opt, Arg> {
         // sub commands part
         if (this.subCommands.length !== 0) {
             result += "  Commands:\n\n";
-            let subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
+            let subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name + " (aka '" + cmd._alias + "')"));
             result += this.subCommands.map(cmd => {
                 let result = "    ";
-                result += utils.pad(cmd.name, subCommandsMaxLength);
+                let display = cmd.name;
+                if (cmd._alias) {
+                    display += " (aka '" + cmd._alias + "')";
+                }
+
+                result += utils.pad(display, subCommandsMaxLength);
                 result += "  ";
                 result += cmd._description || "";
                 result += "\n";

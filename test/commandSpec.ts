@@ -152,11 +152,46 @@ describe("Command", () => {
             let expect = `
 this is command description
 
-  Usage: test [options] 
+  Usage: test [options]
 
   Options:
 
     -r, --replace [file]
+                            `.trim();
+
+            assert(text === expect);
+        });
+    });
+    describe("#subCommandAlias", () => {
+        it("create sub command with alias", () => {
+            let cmd = new Command("test");
+            let remote = cmd.subCommand("remote");
+            remote.alias("re");
+
+            assert(remote.name === "remote");
+            assert(remote._alias === "re");
+        });
+    });
+    describe("#helpTextSubComand", () => {
+        it("construct humanreadable text", () => {
+            let cmd = new Command("test");
+            let remote = cmd.subCommand("remote");
+            remote.alias("re");
+            cmd.description("this is command description");
+            cmd.option("-r, --replace [file]");
+
+            let text = cmd.helpText().trim();
+            let expect = `
+this is command description
+
+  Usage: test [options] [command]
+
+  Options:
+
+    -r, --replace [file]\n\n
+  Commands:
+
+    remote (aka 're')
                             `.trim();
             assert(text === expect);
         });
