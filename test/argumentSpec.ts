@@ -1,7 +1,7 @@
 import assert = require("assert");
 
-import Argument from "../lib/argument";
-import { CommandpostError } from "../lib/error";
+import Argument from "../src/argument";
+import { CommandpostError } from "../src/error";
 
 describe("Argument", () => {
     describe("constructor", () => {

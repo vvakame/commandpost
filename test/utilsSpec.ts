@@ -1,6 +1,6 @@
 import assert = require("assert");
 
-import utils = require("../lib/utils");
+import utils = require("../src/utils");
 
 describe("utils", () => {
     describe("pad", () => {

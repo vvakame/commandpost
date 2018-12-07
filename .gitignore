@@ -26,12 +26,6 @@ typings/
 example/*.js
 example/*.js.map
 example/*.d.ts
-lib/*.js
-lib/*.js.map
-lib/*.d.ts
-test/**/*.js
-test/**/*.js.map
-test/**/*.d.ts
 test/suite/libs/
 testEspowered/
 test-results.xml
@@ -47,3 +41,6 @@ test-tmp/
 test-repository/
 test-cli/
 test-typings/
+
+# production
+lib/
