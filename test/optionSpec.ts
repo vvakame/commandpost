@@ -1,6 +1,6 @@
 import assert = require("assert");
 
-import Option from "../lib/option";
+import Option from "../src/option";
 
 describe("Option", () => {
     describe("constructor", () => {

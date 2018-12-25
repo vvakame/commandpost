@@ -1,6 +1,6 @@
 import assert = require("assert");
 
-import Command from "../lib/command";
+import Command from "../src/command";
 
 describe("Command", () => {
     describe("#subCommand", () => {

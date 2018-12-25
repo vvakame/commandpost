@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "outDir": "./lib",                        /* Redirect output structure to the directory. */
+    "noEmit": false,                          /* Emit outputs. */
+  },
+  "include": [
+    "src/**/*.ts",
+  ]
+}

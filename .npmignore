@@ -3,6 +3,9 @@
 # for WebStorm
 .idea/
 
+# VS Code
+.vscode
+
 # for npm
 node_modules/
 npm-shrinkwrap.json
@@ -12,11 +15,8 @@ yarn.lock
 typings/
 .tscache/
 
-# for https://github.com/Microsoft/TypeScript/issues/4667
-lib/**/*.ts
-!lib/**/*.d.ts
-
 # codes
+src/
 test/
 test-tmp/
 test-repository/
@@ -29,7 +29,9 @@ example/
 .editorconfig
 circle.yml
 setup.sh
-Gruntfile.js
+tsconfig.json
+tsconfig.lib.json
 tslint.json
 
 npm-debug.log
+

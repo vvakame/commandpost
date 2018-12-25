@@ -17,7 +17,7 @@ $ npm install --save commandpost
 
 ### Basic Usage
 
-```
+```sh
 $ cat cli.ts
 import * as commandpost from "commandpost";
 
@@ -65,7 +65,7 @@ commandpost can automatically generate help and command usage messages based on 
 
 ### Options
 
-```
+```sh
 // shorthand & formal option with a required parameter. value is converted to string[].
 cmd.option("-c, --config <configFile>", "Read setting from specified config file path");
 
@@ -83,7 +83,7 @@ If you want to handle unknown options, you can use the `.allowUnknownOption` met
 
 ### Arguments
 
-```
+```sh
 // required argument
 commandpost.create<{}, { food: string; }>("dinner <food>");
 
