@@ -544,9 +544,9 @@ export default class Command<Opt, Arg> {
                 result += "  ";
                 result += opt.description || "";
                 result += "\n";
-                result = result.trimRight();
                 return result;
             }).join("");
+            result = result.trimRight();
             result += "\n\n";
         }
 
