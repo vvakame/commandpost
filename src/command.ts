@@ -374,7 +374,7 @@ export default class Command<Opt, Arg> {
         if (this.unknownOptions.length !== 0 && !allowUnknownOption) {
             let errMsg = "unknown option";
             errMsg += this.unknownOptions.length === 1 ? " " : "s ";
-            errMsg += this.unknownOptions.join(", ") + "\n";
+            errMsg += this.unknownOptions.join(", ") + "\n\n";
             errMsg += this.helpText();
             throw new CommandpostError({
                 message: errMsg,
