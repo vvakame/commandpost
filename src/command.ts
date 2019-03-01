@@ -355,7 +355,20 @@ export default class Command<Opt, Arg> {
 
         this._rawArgs = target.slice(0);
         this._args = this._normalize(target);
-        this._rest = this._parseOptions(this._args);
+
+        try {
+            this._rest = this._parseOptions(this._args);
+        } catch (error) {
+            let errMsg = error.message + "\n\n";
+            errMsg += this.helpText();
+            throw new CommandpostError({
+                message: errMsg,
+                reason: error.reason,
+                parts: error.parts,
+                params: error.params,
+            });
+        }
+
         let cmds = this._getAncestorsAndMe();
         let allowUnknownOption = cmds.reverse().map(cmd => cmd._allowUnknownOption).filter(allowUnknownOption => typeof allowUnknownOption !== "undefined")[0];
         if (this.unknownOptions.length !== 0 && !allowUnknownOption) {
