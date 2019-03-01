@@ -42,6 +42,12 @@ export default class Command<Opt, Arg> {
      */
     _args?: string[];
     /**
+     * Command alias
+     * @private
+     */
+    _alias?: string;
+
+    /**
      * e.g. bar
      * @private
      */
@@ -152,6 +158,17 @@ export default class Command<Opt, Arg> {
     }
 
     /**
+     * set command alias.
+     * @param alias
+     * @returns {Command}
+     * @method
+     */
+    alias(alias: string): Command<Opt, Arg> {
+        this._alias = alias;
+        return this;
+    }
+
+    /**
      * set description for this command.
      * @param desc
      * @returns {Command}
@@ -226,7 +243,7 @@ export default class Command<Opt, Arg> {
      * @returns {boolean}
      */
     is(arg: string) {
-        return this.name === arg;
+        return this.name === arg || this._alias === arg;
     }
 
     /**
@@ -513,6 +530,8 @@ export default class Command<Opt, Arg> {
                 }).join(" ");
             }
         }
+
+        result = result.trimRight();
         result += "\n\n";
 
         // options part
@@ -525,6 +544,7 @@ export default class Command<Opt, Arg> {
                 result += "  ";
                 result += opt.description || "";
                 result += "\n";
+                result = result.trimRight();
                 return result;
             }).join("");
             result += "\n\n";
@@ -533,10 +553,15 @@ export default class Command<Opt, Arg> {
         // sub commands part
         if (this.subCommands.length !== 0) {
             result += "  Commands:\n\n";
-            let subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name));
+            let subCommandsMaxLength = utils.maxLength(this.subCommands.map(cmd => cmd.name + " (aka '" + cmd._alias + "')"));
             result += this.subCommands.map(cmd => {
                 let result = "    ";
-                result += utils.pad(cmd.name, subCommandsMaxLength);
+                let display = cmd.name;
+                if (cmd._alias) {
+                    display += " (aka '" + cmd._alias + "')";
+                }
+
+                result += utils.pad(display, subCommandsMaxLength);
                 result += "  ";
                 result += cmd._description || "";
                 result += "\n";
