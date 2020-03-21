@@ -9,7 +9,7 @@ Of course, commandpost can also be used from an ordinary JavaScript program. :+1
 
 ## Installation
 
-```
+```bash
 $ npm install --save commandpost
 ```
 
@@ -17,8 +17,8 @@ $ npm install --save commandpost
 
 ### Basic Usage
 
-```sh
-$ cat cli.ts
+```ts
+// cli.ts
 import * as commandpost from "commandpost";
 
 let root = commandpost
@@ -40,7 +40,9 @@ commandpost
 		}
 		process.exit(1);
 	});
+```
 
+```bash
 $ node cli.js --help
   Usage: dinner [options] [--] <food>
 
@@ -65,7 +67,7 @@ commandpost can automatically generate help and command usage messages based on 
 
 ### Options
 
-```sh
+```ts
 // shorthand & formal option with a required parameter. value is converted to string[].
 cmd.option("-c, --config <configFile>", "Read setting from specified config file path");
 
@@ -83,7 +85,7 @@ If you want to handle unknown options, you can use the `.allowUnknownOption` met
 
 ### Arguments
 
-```sh
+```ts
 // required argument
 commandpost.create<{}, { food: string; }>("dinner <food>");
 
